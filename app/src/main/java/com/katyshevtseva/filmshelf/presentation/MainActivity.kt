@@ -1,9 +1,11 @@
-package com.katyshevtseva.filmshelf
+package com.katyshevtseva.filmshelf.presentation
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import com.katyshevtseva.filmshelf.R
 import com.katyshevtseva.filmshelf.databinding.ActivityMainBinding
+import com.katyshevtseva.filmshelf.web.WebRepository
 
 class MainActivity : AppCompatActivity() {
 
@@ -16,6 +18,8 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         setupBottomNavigationView()
+
+        WebRepository().test()
     }
 
     private fun setupBottomNavigationView() {
