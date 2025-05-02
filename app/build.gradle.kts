@@ -1,6 +1,7 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.ksp)
 }
 
 android {
@@ -51,7 +52,7 @@ dependencies {
 
     implementation(libs.retrofit)
     implementation(libs.converter.gson)
-    implementation(libs.adapter.rxjava3)
-    implementation(libs.rxjava)
-    implementation(libs.rxandroid)
+    implementation(libs.dagger)
+    ksp(libs.dagger.compiler)
+    implementation(libs.lifecycle.viewmodel.ktx)
 }

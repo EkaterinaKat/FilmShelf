@@ -1,8 +1,8 @@
-package com.katyshevtseva.filmshelf.web.model
+package com.katyshevtseva.filmshelf.data.remote.model
 
 import com.google.gson.annotations.SerializedName
 
-data class Movie(
+data class MovieDto(
     @SerializedName("id")
     val id: Int = 0,
 
