@@ -4,6 +4,9 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.katyshevtseva.filmshelf.domain.model.Movie
+import com.katyshevtseva.filmshelf.domain.result.Error
+import com.katyshevtseva.filmshelf.domain.result.Success
 import com.katyshevtseva.filmshelf.domain.usecase.GetBestMoviesUseCase
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -12,13 +15,21 @@ class HomeViewModel @Inject constructor(
     private val getBestMoviesUseCase: GetBestMoviesUseCase
 ) : ViewModel() {
 
-    private val _testLD = MutableLiveData<String>()
-    val testLD: LiveData<String>
-        get() = _testLD
+    private val _moviesLD = MutableLiveData<String>()
+    val moviesLD: LiveData<String>
+        get() = _moviesLD
+
+    private val _errorLD = MutableLiveData<String>()
+    val errorLD: LiveData<String>
+        get() = _errorLD
 
     init {
         viewModelScope.launch {
-            _testLD.value = getBestMoviesUseCase.invoke().toString()
+            val result = getBestMoviesUseCase.invoke()
+            when (result) {
+                is Success<List<Movie>> -> _moviesLD.value = result.data.toString()
+                is Error -> _errorLD.value = result.exception.message.toString()
+            }
         }
     }
 }

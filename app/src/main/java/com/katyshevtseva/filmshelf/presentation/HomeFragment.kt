@@ -55,7 +55,10 @@ class HomeFragment : Fragment() {
     }
 
     private fun observeViewModel() {
-        viewModel.testLD.observe(requireActivity()) {
+        viewModel.moviesLD.observe(requireActivity()) {
+            binding.testTv.text = it
+        }
+        viewModel.errorLD.observe(requireActivity()) {
             binding.testTv.text = it
         }
     }
