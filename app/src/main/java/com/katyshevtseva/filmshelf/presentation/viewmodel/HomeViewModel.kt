@@ -23,13 +23,19 @@ class HomeViewModel @Inject constructor(
     val errorLD: LiveData<String>
         get() = _errorLD
 
+    private val _loadingLD = MutableLiveData<Boolean>()
+    val loadingLD: LiveData<Boolean>
+        get() = _loadingLD
+
     init {
         viewModelScope.launch {
+            _loadingLD.value = true
             val result = getBestMoviesUseCase.invoke()
             when (result) {
                 is Success<List<Movie>> -> _moviesLD.value = result.data
                 is Error -> _errorLD.value = result.exception.message.toString()
             }
+            _loadingLD.value = false
         }
     }
 }

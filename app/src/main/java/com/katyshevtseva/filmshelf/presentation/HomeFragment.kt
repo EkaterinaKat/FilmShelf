@@ -68,11 +68,17 @@ class HomeFragment : Fragment() {
     }
 
     private fun observeViewModel() {
-        viewModel.moviesLD.observe(requireActivity()) {
+        viewModel.moviesLD.observe(viewLifecycleOwner) {
             movieAdapter.movies = it
         }
-        viewModel.errorLD.observe(requireActivity()) {
+        viewModel.errorLD.observe(viewLifecycleOwner) {
             showAlertDialog(requireActivity(), resources.getString(R.string.error), it)
+        }
+        viewModel.loadingLD.observe(viewLifecycleOwner) {
+            if (it)
+                binding.loadingProgressBar.visibility = View.VISIBLE
+            else
+                binding.loadingProgressBar.visibility = View.GONE
         }
     }
 }
