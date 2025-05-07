@@ -12,7 +12,6 @@ class MovieMapper @Inject constructor() {
         description = dto.description,
         year = dto.year,
         posterUrl = dto.poster?.url,
-        ratingKp = dto.rating?.kp,
-        ratingImdb = dto.rating?.imdb
+        ratingKp = dto.rating?.kp ?: 0.0
     )
 }

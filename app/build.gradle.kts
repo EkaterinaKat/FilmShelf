@@ -55,4 +55,5 @@ dependencies {
     implementation(libs.dagger)
     ksp(libs.dagger.compiler)
     implementation(libs.lifecycle.viewmodel.ktx)
+    implementation(libs.glide)
 }

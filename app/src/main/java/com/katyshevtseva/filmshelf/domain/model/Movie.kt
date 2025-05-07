@@ -6,6 +6,5 @@ data class Movie(
     val description: String? = null,
     val year: Int = 0,
     val posterUrl: String? = null,
-    val ratingKp: Double? = null,
-    val ratingImdb: String? = null
+    val ratingKp: Double = 0.0
 )

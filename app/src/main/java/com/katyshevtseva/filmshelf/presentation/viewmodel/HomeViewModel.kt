@@ -15,8 +15,8 @@ class HomeViewModel @Inject constructor(
     private val getBestMoviesUseCase: GetBestMoviesUseCase
 ) : ViewModel() {
 
-    private val _moviesLD = MutableLiveData<String>()
-    val moviesLD: LiveData<String>
+    private val _moviesLD = MutableLiveData<List<Movie>>()
+    val moviesLD: LiveData<List<Movie>>
         get() = _moviesLD
 
     private val _errorLD = MutableLiveData<String>()
@@ -27,7 +27,7 @@ class HomeViewModel @Inject constructor(
         viewModelScope.launch {
             val result = getBestMoviesUseCase.invoke()
             when (result) {
-                is Success<List<Movie>> -> _moviesLD.value = result.data.toString()
+                is Success<List<Movie>> -> _moviesLD.value = result.data
                 is Error -> _errorLD.value = result.exception.message.toString()
             }
         }

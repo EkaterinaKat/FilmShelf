@@ -7,8 +7,12 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.GridLayoutManager
 import com.katyshevtseva.filmshelf.FilmShelfApp
+import com.katyshevtseva.filmshelf.R
 import com.katyshevtseva.filmshelf.databinding.FragmentHomeBinding
+import com.katyshevtseva.filmshelf.presentation.adapter.MovieAdapter
+import com.katyshevtseva.filmshelf.presentation.util.showAlertDialog
 import com.katyshevtseva.filmshelf.presentation.viewmodel.HomeViewModel
 import com.katyshevtseva.filmshelf.presentation.viewmodel.ViewModelFactory
 import javax.inject.Inject
@@ -30,6 +34,8 @@ class HomeFragment : Fragment() {
     private val binding: FragmentHomeBinding
         get() = _binding ?: throw RuntimeException("FragmentHomeBinding is null")
 
+    private val movieAdapter = MovieAdapter()
+
     override fun onAttach(context: Context) {
         component.inject(this)
         super.onAttach(context)
@@ -46,6 +52,13 @@ class HomeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        binding.moviesRecyclerView.setLayoutManager(
+            GridLayoutManager(
+                requireActivity(),
+                2
+            )
+        )
+        binding.moviesRecyclerView.setAdapter(movieAdapter)
         observeViewModel()
     }
 
@@ -56,10 +69,10 @@ class HomeFragment : Fragment() {
 
     private fun observeViewModel() {
         viewModel.moviesLD.observe(requireActivity()) {
-            binding.testTv.text = it
+            movieAdapter.movies = it
         }
         viewModel.errorLD.observe(requireActivity()) {
-            binding.testTv.text = it
+            showAlertDialog(requireActivity(), resources.getString(R.string.error), it)
         }
     }
 }
