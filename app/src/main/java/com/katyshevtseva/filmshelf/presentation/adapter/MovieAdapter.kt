@@ -21,6 +21,8 @@ class MovieAdapter : RecyclerView.Adapter<MovieViewHolder>() {
             notifyDataSetChanged()
         }
 
+    var onMovieClickListener: ((Movie) -> Unit)? = null
+
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
@@ -38,8 +40,12 @@ class MovieAdapter : RecyclerView.Adapter<MovieViewHolder>() {
             .load(movie.posterUrl)
             .into(holder.posterImageView)
         holder.ratingTextView.text =
-            String.format(Locale.getDefault(), "%.1f", movie.ratingKp ?: 0.0)
+            String.format(Locale.getDefault(), "%.1f", movie.ratingKp)
         holder.ratingTextView.background = getRatingBackground(movie, holder.itemView.context)
+
+        holder.itemView.setOnClickListener { view: View? ->
+            onMovieClickListener?.invoke(movie)
+        }
     }
 
     override fun getItemCount(): Int {

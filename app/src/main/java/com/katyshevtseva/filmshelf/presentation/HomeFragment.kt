@@ -58,6 +58,9 @@ class HomeFragment : Fragment() {
                 2
             )
         )
+        movieAdapter.onMovieClickListener = { movie ->
+            startActivity(MovieDetailsActivity.newIntent(requireActivity(), movie))
+        }
         binding.moviesRecyclerView.setAdapter(movieAdapter)
         observeViewModel()
     }

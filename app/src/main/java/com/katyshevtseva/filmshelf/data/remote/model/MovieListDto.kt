@@ -2,7 +2,7 @@ package com.katyshevtseva.filmshelf.data.remote.model
 
 import com.google.gson.annotations.SerializedName
 
-data class MovieResponse(
+data class MovieListDto(
     @SerializedName("docs")
     val movies: List<MovieDto>? = null
 )

@@ -38,4 +38,27 @@ class MoviesRepositoryImpl @Inject constructor(
             Error(RuntimeException("Неизвестная ошибка: ${e.localizedMessage}", e))
         }
     }
+
+    override suspend fun getMovieDetails(id: Int): Result<Movie> {
+        return try {
+            val response = apiService.loadMovieById(
+                id,
+                "2BW30XT-0E84FXT-PC1P59Z-1BW2MWB"
+            )
+            if (response.isSuccessful) {
+                val body = response.body()
+                if (body != null) {
+                    Success(mapper.mapDtoToDomainModel(body))
+                } else {
+                    Error(RuntimeException("Пустой ответ сервера"))
+                }
+            } else {
+                Error(RuntimeException("Ошибка сервера: ${response.code()}"))
+            }
+        } catch (e: IOException) {
+            Error(RuntimeException("Ошибка сети: ${e.localizedMessage}", e))
+        } catch (e: Exception) {
+            Error(RuntimeException("Неизвестная ошибка: ${e.localizedMessage}", e))
+        }
+    }
 }
