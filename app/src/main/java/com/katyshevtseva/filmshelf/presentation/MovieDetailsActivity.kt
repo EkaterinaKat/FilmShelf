@@ -4,13 +4,16 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.net.toUri
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.katyshevtseva.filmshelf.FilmShelfApp
 import com.katyshevtseva.filmshelf.R
 import com.katyshevtseva.filmshelf.databinding.ActivityMovieDetailsBinding
 import com.katyshevtseva.filmshelf.domain.model.Movie
+import com.katyshevtseva.filmshelf.presentation.adapter.TrailerAdapter
 import com.katyshevtseva.filmshelf.presentation.util.showAlertDialog
 import com.katyshevtseva.filmshelf.presentation.viewmodel.MovieDetailsViewModel
 import java.lang.String
@@ -33,6 +36,8 @@ class MovieDetailsActivity : AppCompatActivity() {
         ActivityMovieDetailsBinding.inflate(layoutInflater)
     }
 
+    private val trailerAdapter = TrailerAdapter()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
@@ -53,6 +58,14 @@ class MovieDetailsActivity : AppCompatActivity() {
             }
         )[MovieDetailsViewModel::class.java]
 
+        trailerAdapter.onTrailerClickListener = { trailer ->
+            val intent = Intent(Intent.ACTION_VIEW)
+            intent.setData(trailer.url?.toUri())
+            startActivity(intent)
+        }
+        binding.trailerRecyclerView.setLayoutManager(LinearLayoutManager(this))
+        binding.trailerRecyclerView.setAdapter(trailerAdapter)
+
         observeViewModel()
     }
 
@@ -65,6 +78,9 @@ class MovieDetailsActivity : AppCompatActivity() {
         }
         viewModel.errorLD.observe(this) {
             showAlertDialog(this, resources.getString(R.string.error), it)
+        }
+        viewModel.trailerLD.observe(this) {
+            trailerAdapter.trailers = it
         }
     }
 

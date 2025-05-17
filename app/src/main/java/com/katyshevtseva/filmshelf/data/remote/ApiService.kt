@@ -2,6 +2,7 @@ package com.katyshevtseva.filmshelf.data.remote
 
 import com.katyshevtseva.filmshelf.data.remote.model.MovieDto
 import com.katyshevtseva.filmshelf.data.remote.model.MovieListDto
+import com.katyshevtseva.filmshelf.data.remote.model.TrailerListDto
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Path
@@ -24,4 +25,10 @@ interface ApiService {
         @Path("movieId") movieId: Int,
         @Query("token") token: String
     ): Response<MovieDto>
+
+    @GET("movie/{movieId}")
+    suspend fun loadTrailers(
+        @Path("movieId") movieId: Int,
+        @Query("token") token: String
+    ): Response<TrailerListDto>
 }

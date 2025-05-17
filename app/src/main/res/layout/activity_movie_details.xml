@@ -58,6 +58,13 @@
             app:layout_constraintTop_toBottomOf="@id/yearTextView"
             tools:text="Description" />
 
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/trailerRecyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:nestedScrollingEnabled="false"
+            app:layout_constraintTop_toBottomOf="@id/descTextView" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.core.widget.NestedScrollView>
