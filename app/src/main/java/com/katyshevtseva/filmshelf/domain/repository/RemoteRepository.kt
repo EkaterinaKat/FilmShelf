@@ -4,7 +4,7 @@ import com.katyshevtseva.filmshelf.domain.model.Movie
 import com.katyshevtseva.filmshelf.domain.model.Trailer
 import com.katyshevtseva.filmshelf.domain.result.Result
 
-interface MoviesRepository {
+interface RemoteRepository {
 
     suspend fun getBestMovies(page: Int): Result<List<Movie>>
 

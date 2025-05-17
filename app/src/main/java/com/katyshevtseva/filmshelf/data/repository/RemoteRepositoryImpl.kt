@@ -7,7 +7,7 @@ import com.katyshevtseva.filmshelf.data.remote.model.MovieListDto
 import com.katyshevtseva.filmshelf.data.remote.model.TrailerListDto
 import com.katyshevtseva.filmshelf.domain.model.Movie
 import com.katyshevtseva.filmshelf.domain.model.Trailer
-import com.katyshevtseva.filmshelf.domain.repository.MoviesRepository
+import com.katyshevtseva.filmshelf.domain.repository.RemoteRepository
 import com.katyshevtseva.filmshelf.domain.result.Error
 import com.katyshevtseva.filmshelf.domain.result.Result
 import com.katyshevtseva.filmshelf.domain.result.Success
@@ -15,10 +15,10 @@ import retrofit2.Response
 import java.io.IOException
 import javax.inject.Inject
 
-class MoviesRepositoryImpl @Inject constructor(
+class RemoteRepositoryImpl @Inject constructor(
     private val apiService: ApiService,
     private val mapper: MovieMapper
-) : MoviesRepository {
+) : RemoteRepository {
 
     override suspend fun getBestMovies(page: Int): Result<List<Movie>> {
         return load({

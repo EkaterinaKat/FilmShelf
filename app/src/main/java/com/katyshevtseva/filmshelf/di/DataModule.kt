@@ -2,8 +2,8 @@ package com.katyshevtseva.filmshelf.di
 
 import com.katyshevtseva.filmshelf.data.remote.ApiFactory
 import com.katyshevtseva.filmshelf.data.remote.ApiService
-import com.katyshevtseva.filmshelf.data.repository.MoviesRepositoryImpl
-import com.katyshevtseva.filmshelf.domain.repository.MoviesRepository
+import com.katyshevtseva.filmshelf.data.repository.RemoteRepositoryImpl
+import com.katyshevtseva.filmshelf.domain.repository.RemoteRepository
 import dagger.Binds
 import dagger.Module
 import dagger.Provides
@@ -13,7 +13,7 @@ interface DataModule {
 
     @Binds
     @ApplicationScope
-    fun bindMoviesRepository(impl: MoviesRepositoryImpl): MoviesRepository
+    fun bindRemoteRepository(impl: RemoteRepositoryImpl): RemoteRepository
 
     companion object {
 
