@@ -20,10 +20,10 @@ class MoviesRepositoryImpl @Inject constructor(
     private val mapper: MovieMapper
 ) : MoviesRepository {
 
-    override suspend fun getBestMovies(): Result<List<Movie>> {
+    override suspend fun getBestMovies(page: Int): Result<List<Movie>> {
         return load({
             apiService.loadMovies(
-                1,
+                page,
                 "2BW30XT-0E84FXT-PC1P59Z-1BW2MWB",
                 "votes.kp",
                 "-1",

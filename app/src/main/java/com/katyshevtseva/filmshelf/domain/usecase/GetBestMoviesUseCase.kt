@@ -9,7 +9,7 @@ class GetBestMoviesUseCase @Inject constructor(
     private val moviesRepository: MoviesRepository
 ) {
 
-    suspend operator fun invoke(): Result<List<Movie>> {
-        return moviesRepository.getBestMovies()
+    suspend operator fun invoke(page: Int): Result<List<Movie>> {
+        return moviesRepository.getBestMovies(page)
     }
 }

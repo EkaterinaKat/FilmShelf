@@ -61,6 +61,7 @@ class HomeFragment : Fragment() {
         movieAdapter.onMovieClickListener = { movie ->
             startActivity(MovieDetailsActivity.newIntent(requireActivity(), movie))
         }
+        movieAdapter.onReachEndListener = { viewModel.loadNextPage() }
         binding.moviesRecyclerView.setAdapter(movieAdapter)
         observeViewModel()
     }

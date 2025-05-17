@@ -27,15 +27,38 @@ class HomeViewModel @Inject constructor(
     val loadingLD: LiveData<Boolean>
         get() = _loadingLD
 
+    private var page = 0
+
     init {
-        viewModelScope.launch {
-            _loadingLD.value = true
-            val result = getBestMoviesUseCase.invoke()
-            when (result) {
-                is Success<List<Movie>> -> _moviesLD.value = result.data
-                is Error -> _errorLD.value = result.exception.message.toString()
+        loadNextPage()
+    }
+
+    fun loadNextPage() {
+        if (_loadingLD.value == null || _loadingLD.value == false) {
+            page++
+            viewModelScope.launch {
+                _loadingLD.value = true
+                val result = getBestMoviesUseCase.invoke(page)
+                when (result) {
+                    is Success<List<Movie>> -> {
+                        addNextPageToExistingOnes(result.data)
+                    }
+
+                    is Error -> _errorLD.value = result.exception.message.toString()
+                }
+                _loadingLD.value = false
             }
-            _loadingLD.value = false
         }
+
+    }
+
+    private fun addNextPageToExistingOnes(nextPage: List<Movie>) {
+        val existingPages = _moviesLD.value
+        var allPages = mutableListOf<Movie>()
+        if (existingPages != null) {
+            allPages.addAll(existingPages)
+        }
+        allPages.addAll(nextPage)
+        _moviesLD.value = allPages
     }
 }

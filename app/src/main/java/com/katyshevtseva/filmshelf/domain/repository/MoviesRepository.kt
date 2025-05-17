@@ -6,7 +6,7 @@ import com.katyshevtseva.filmshelf.domain.result.Result
 
 interface MoviesRepository {
 
-    suspend fun getBestMovies(): Result<List<Movie>>
+    suspend fun getBestMovies(page: Int): Result<List<Movie>>
 
     suspend fun getMovieDetails(id: Int): Result<Movie>
 

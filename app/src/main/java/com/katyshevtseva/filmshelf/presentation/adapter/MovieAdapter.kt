@@ -22,6 +22,7 @@ class MovieAdapter : RecyclerView.Adapter<MovieViewHolder>() {
         }
 
     var onMovieClickListener: ((Movie) -> Unit)? = null
+    var onReachEndListener: (() -> Unit)? = null
 
     override fun onCreateViewHolder(
         parent: ViewGroup,
@@ -46,6 +47,10 @@ class MovieAdapter : RecyclerView.Adapter<MovieViewHolder>() {
         holder.itemView.setOnClickListener { view: View? ->
             onMovieClickListener?.invoke(movie)
         }
+
+        if (position >= movies.size - PRELOAD_OFFSET) {
+            onReachEndListener?.invoke()
+        }
     }
 
     override fun getItemCount(): Int {
@@ -60,6 +65,10 @@ class MovieAdapter : RecyclerView.Adapter<MovieViewHolder>() {
             else -> R.drawable.circle_red
         }
         return ContextCompat.getDrawable(context, backgroundId)
+    }
+
+    companion object {
+        private const val PRELOAD_OFFSET = 10
     }
 }
 
