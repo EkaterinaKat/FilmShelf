@@ -56,4 +56,6 @@ dependencies {
     ksp(libs.dagger.compiler)
     implementation(libs.lifecycle.viewmodel.ktx)
     implementation(libs.glide)
+    implementation(libs.room.runtime)
+    annotationProcessor(libs.room.compiler)
 }

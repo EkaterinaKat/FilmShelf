@@ -91,7 +91,7 @@ class MovieDetailsActivity : AppCompatActivity() {
 
         fun newIntent(context: Context, movie: Movie): Intent {
             val intent = Intent(context, MovieDetailsActivity::class.java)
-            intent.putExtra(MOVIE_ID_KEY, movie.id)
+            intent.putExtra(MOVIE_ID_KEY, movie.kpId)
             return intent
         }
     }

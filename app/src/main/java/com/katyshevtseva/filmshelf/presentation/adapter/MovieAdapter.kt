@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.katyshevtseva.filmshelf.R
 import com.katyshevtseva.filmshelf.domain.model.Movie
+import com.katyshevtseva.filmshelf.presentation.util.NULL_RATING_FOR_DISPLAY
 import java.util.Locale
 
 class MovieAdapter : RecyclerView.Adapter<MovieViewHolder>() {
@@ -58,7 +59,7 @@ class MovieAdapter : RecyclerView.Adapter<MovieViewHolder>() {
     }
 
     private fun getRatingBackground(movie: Movie, context: Context): Drawable? {
-        val rating: Double = movie.ratingKp
+        val rating: Double = movie.ratingKp ?: NULL_RATING_FOR_DISPLAY
         val backgroundId: Int = when {
             rating > 7 -> R.drawable.circle_green
             rating in 5.0..7.0 -> R.drawable.circle_orange

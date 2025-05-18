@@ -13,7 +13,7 @@ data class MovieDto(
     val description: String? = null,
 
     @SerializedName("year")
-    val year: Int,
+    val year: Int? = null,
 
     @SerializedName("poster")
     val poster: PosterDto? = null,
