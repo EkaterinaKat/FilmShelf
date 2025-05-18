@@ -9,4 +9,6 @@ interface LocalRepository {
     suspend fun deleteFromFavouriteMovies(movie: Movie)
 
     suspend fun getFavouriteMovies(): List<Movie>
+
+    suspend fun isMovieFavourite(movie: Movie): Boolean
 }

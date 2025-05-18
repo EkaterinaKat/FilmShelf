@@ -22,4 +22,8 @@ class LocalRepositoryImpl @Inject constructor(
     override suspend fun getFavouriteMovies(): List<Movie> {
         return movieDao.getMovies().map { mapper.mapEntityToDomainModel(it) }
     }
+
+    override suspend fun isMovieFavourite(movie: Movie): Boolean {
+        return movieDao.existsByKpId(movie.kpId)
+    }
 }

@@ -17,4 +17,7 @@ interface MovieDao {
 
     @Query("DELETE FROM movie WHERE kpId = :kpId")
     suspend fun deleteByKpId(kpId: Int)
+
+    @Query("SELECT EXISTS(SELECT 1 FROM movie WHERE kpId = :kpId)")
+    suspend fun existsByKpId(kpId: Int): Boolean
 }
