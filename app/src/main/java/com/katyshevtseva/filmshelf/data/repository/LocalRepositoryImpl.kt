@@ -12,18 +12,20 @@ class LocalRepositoryImpl @Inject constructor(
 ) : LocalRepository {
 
     override suspend fun saveFavouriteMovie(movie: Movie) {
-        movieDao.add(mapper.mapDomainModelToEntity(movie))
+        if (!isMovieFavourite(movie.kpId)) {
+            movieDao.add(mapper.mapDomainModelToEntity(movie))
+        }
     }
 
-    override suspend fun deleteFromFavouriteMovies(movie: Movie) {
-        movieDao.deleteByKpId(movie.kpId)
+    override suspend fun deleteFromFavouriteMovies(kpId: Int) {
+        movieDao.deleteByKpId(kpId)
     }
 
     override suspend fun getFavouriteMovies(): List<Movie> {
         return movieDao.getMovies().map { mapper.mapEntityToDomainModel(it) }
     }
 
-    override suspend fun isMovieFavourite(movie: Movie): Boolean {
-        return movieDao.existsByKpId(movie.kpId)
+    override suspend fun isMovieFavourite(kpId: Int): Boolean {
+        return movieDao.existsByKpId(kpId)
     }
 }

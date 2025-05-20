@@ -3,6 +3,7 @@ package com.katyshevtseva.filmshelf.presentation
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.net.toUri
 import androidx.lifecycle.ViewModel
@@ -44,8 +45,8 @@ class MovieDetailsActivity : AppCompatActivity() {
 
         component.inject(this)
 
-        val movieId = intent.getIntExtra(MOVIE_ID_KEY, UNRESOLVED_MOVIE_ID)
-        if (movieId == UNRESOLVED_MOVIE_ID) {
+        val movieKpId = intent.getIntExtra(MOVIE_KP_ID_KEY, UNRESOLVED_MOVIE_ID)
+        if (movieKpId == UNRESOLVED_MOVIE_ID) {
             showAlertDialog(this, resources.getString(R.string.error), "Ашипка")
         }
 
@@ -53,7 +54,7 @@ class MovieDetailsActivity : AppCompatActivity() {
             this,
             object : ViewModelProvider.Factory {
                 override fun <T : ViewModel> create(modelClass: Class<T>): T {
-                    return viewModelFactory.create(movieId) as T
+                    return viewModelFactory.create(movieKpId) as T
                 }
             }
         )[MovieDetailsViewModel::class.java]
@@ -65,6 +66,8 @@ class MovieDetailsActivity : AppCompatActivity() {
         }
         binding.trailerRecyclerView.setLayoutManager(LinearLayoutManager(this))
         binding.trailerRecyclerView.setAdapter(trailerAdapter)
+
+        binding.favouriteImageView.setOnClickListener { viewModel.onFavouriteClick() }
 
         observeViewModel()
     }
@@ -82,16 +85,30 @@ class MovieDetailsActivity : AppCompatActivity() {
         viewModel.trailerLD.observe(this) {
             trailerAdapter.trailers = it
         }
+        viewModel.isFavouriteLD.observe(this) {
+            val resource = if (it) {
+                R.mipmap.favourite_on
+            } else {
+                R.mipmap.favourite_off
+            }
+            binding.favouriteImageView.setImageResource(resource)
+        }
+        viewModel.loadingLD.observe(this) {
+            if (it)
+                binding.loadingProgressBar.visibility = View.VISIBLE
+            else
+                binding.loadingProgressBar.visibility = View.GONE
+        }
     }
 
     companion object {
 
-        const val MOVIE_ID_KEY = "MOVIE_ID_KEY"
+        const val MOVIE_KP_ID_KEY = "MOVIE_ID_KEY"
         const val UNRESOLVED_MOVIE_ID = -1
 
         fun newIntent(context: Context, movie: Movie): Intent {
             val intent = Intent(context, MovieDetailsActivity::class.java)
-            intent.putExtra(MOVIE_ID_KEY, movie.kpId)
+            intent.putExtra(MOVIE_KP_ID_KEY, movie.kpId)
             return intent
         }
     }
