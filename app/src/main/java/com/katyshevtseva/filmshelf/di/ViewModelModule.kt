@@ -1,6 +1,7 @@
 package com.katyshevtseva.filmshelf.di
 
 import androidx.lifecycle.ViewModel
+import com.katyshevtseva.filmshelf.presentation.viewmodel.FavoritesViewModel
 import com.katyshevtseva.filmshelf.presentation.viewmodel.HomeViewModel
 import dagger.Binds
 import dagger.Module
@@ -13,4 +14,9 @@ interface ViewModelModule {
     @IntoMap
     @ViewModelKey(HomeViewModel::class)
     fun bindHomeViewModel(viewModel: HomeViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(FavoritesViewModel::class)
+    fun bindFavoritesViewModel(viewModel: FavoritesViewModel): ViewModel
 }

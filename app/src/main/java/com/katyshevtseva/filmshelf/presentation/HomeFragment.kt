@@ -52,6 +52,16 @@ class HomeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        setupRecycleView()
+        observeViewModel()
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
+
+    private fun setupRecycleView() {
         binding.moviesRecyclerView.setLayoutManager(
             GridLayoutManager(
                 requireActivity(),
@@ -63,12 +73,6 @@ class HomeFragment : Fragment() {
         }
         movieAdapter.onReachEndListener = { viewModel.loadNextPage() }
         binding.moviesRecyclerView.setAdapter(movieAdapter)
-        observeViewModel()
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
     }
 
     private fun observeViewModel() {
