@@ -6,6 +6,7 @@ import com.katyshevtseva.filmshelf.data.remote.model.MovieDto
 import com.katyshevtseva.filmshelf.data.remote.model.MovieListDto
 import com.katyshevtseva.filmshelf.data.remote.model.TrailerListDto
 import com.katyshevtseva.filmshelf.domain.model.Movie
+import com.katyshevtseva.filmshelf.domain.model.MovieShortInfo
 import com.katyshevtseva.filmshelf.domain.model.Trailer
 import com.katyshevtseva.filmshelf.domain.repository.RemoteRepository
 import com.katyshevtseva.filmshelf.domain.result.Error
@@ -20,7 +21,7 @@ class RemoteRepositoryImpl @Inject constructor(
     private val mapper: MovieMapper
 ) : RemoteRepository {
 
-    override suspend fun getBestMovies(page: Int): Result<List<Movie>> {
+    override suspend fun getBestMovies(page: Int): Result<List<MovieShortInfo>> {
         return load({
             apiService.loadMovies(
                 page,

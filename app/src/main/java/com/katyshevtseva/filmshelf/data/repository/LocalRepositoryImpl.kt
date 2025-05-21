@@ -3,6 +3,7 @@ package com.katyshevtseva.filmshelf.data.repository
 import com.katyshevtseva.filmshelf.data.local.MovieDao
 import com.katyshevtseva.filmshelf.data.mapper.MovieMapper
 import com.katyshevtseva.filmshelf.domain.model.Movie
+import com.katyshevtseva.filmshelf.domain.model.MovieShortInfo
 import com.katyshevtseva.filmshelf.domain.repository.LocalRepository
 import javax.inject.Inject
 
@@ -21,8 +22,8 @@ class LocalRepositoryImpl @Inject constructor(
         movieDao.deleteByKpId(kpId)
     }
 
-    override suspend fun getFavouriteMovies(): List<Movie> {
-        return movieDao.getMovies().map { mapper.mapEntityToDomainModel(it) }
+    override suspend fun getFavouriteMovies(): List<MovieShortInfo> {
+        return movieDao.getMovies().map { mapper.mapEntityToMovieShortInfo(it) }
     }
 
     override suspend fun isMovieFavourite(kpId: Int): Boolean {

@@ -11,18 +11,18 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.katyshevtseva.filmshelf.R
-import com.katyshevtseva.filmshelf.domain.model.Movie
+import com.katyshevtseva.filmshelf.domain.model.MovieShortInfo
 import com.katyshevtseva.filmshelf.presentation.util.NULL_RATING_FOR_DISPLAY
 import java.util.Locale
 
 class MovieAdapter : RecyclerView.Adapter<MovieViewHolder>() {
-    var movies: List<Movie> = listOf()
+    var movies: List<MovieShortInfo> = listOf()
         set(value) {
             field = value
             notifyDataSetChanged()
         }
 
-    var onMovieClickListener: ((Movie) -> Unit)? = null
+    var onMovieClickListener: ((MovieShortInfo) -> Unit)? = null
     var onReachEndListener: (() -> Unit)? = null
 
     override fun onCreateViewHolder(
@@ -58,7 +58,7 @@ class MovieAdapter : RecyclerView.Adapter<MovieViewHolder>() {
         return movies.size
     }
 
-    private fun getRatingBackground(movie: Movie, context: Context): Drawable? {
+    private fun getRatingBackground(movie: MovieShortInfo, context: Context): Drawable? {
         val rating: Double = movie.ratingKp ?: NULL_RATING_FOR_DISPLAY
         val backgroundId: Int = when {
             rating > 7 -> R.drawable.circle_green

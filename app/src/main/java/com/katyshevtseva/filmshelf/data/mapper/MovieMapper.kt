@@ -2,18 +2,27 @@ package com.katyshevtseva.filmshelf.data.mapper
 
 import com.katyshevtseva.filmshelf.data.local.entity.MovieEntity
 import com.katyshevtseva.filmshelf.data.remote.model.MovieDto
+import com.katyshevtseva.filmshelf.data.remote.model.MovieShortInfoDto
 import com.katyshevtseva.filmshelf.data.remote.model.TrailerDto
 import com.katyshevtseva.filmshelf.domain.model.Movie
+import com.katyshevtseva.filmshelf.domain.model.MovieShortInfo
 import com.katyshevtseva.filmshelf.domain.model.Trailer
 import javax.inject.Inject
 
 class MovieMapper @Inject constructor() {
 
     fun mapDtoToDomainModel(dto: MovieDto) = Movie(
-        kpId = dto.id,
+        kpId = dto.kpId,
         name = dto.name,
         description = dto.description,
         year = dto.year,
+        posterUrl = dto.poster?.url,
+        ratingKp = dto.rating?.kp
+    )
+
+    fun mapDtoToDomainModel(dto: MovieShortInfoDto) = MovieShortInfo(
+        kpId = dto.kpId,
+        name = dto.name,
         posterUrl = dto.poster?.url,
         ratingKp = dto.rating?.kp
     )
@@ -37,6 +46,13 @@ class MovieMapper @Inject constructor() {
         name = entity.name,
         description = entity.description,
         year = entity.year,
+        posterUrl = entity.posterUrl,
+        ratingKp = entity.ratingKp
+    )
+
+    fun mapEntityToMovieShortInfo(entity: MovieEntity) = MovieShortInfo(
+        kpId = entity.kpId,
+        name = entity.name,
         posterUrl = entity.posterUrl,
         ratingKp = entity.ratingKp
     )

@@ -4,7 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.katyshevtseva.filmshelf.domain.model.Movie
+import com.katyshevtseva.filmshelf.domain.model.MovieShortInfo
 import com.katyshevtseva.filmshelf.domain.result.Error
 import com.katyshevtseva.filmshelf.domain.result.Success
 import com.katyshevtseva.filmshelf.domain.usecase.GetBestMoviesUseCase
@@ -15,8 +15,8 @@ class HomeViewModel @Inject constructor(
     private val getBestMoviesUseCase: GetBestMoviesUseCase
 ) : ViewModel() {
 
-    private val _moviesLD = MutableLiveData<List<Movie>>()
-    val moviesLD: LiveData<List<Movie>>
+    private val _moviesLD = MutableLiveData<List<MovieShortInfo>>()
+    val moviesLD: LiveData<List<MovieShortInfo>>
         get() = _moviesLD
 
     private val _errorLD = MutableLiveData<String>()
@@ -40,7 +40,7 @@ class HomeViewModel @Inject constructor(
                 _loadingLD.value = true
                 val result = getBestMoviesUseCase.invoke(page)
                 when (result) {
-                    is Success<List<Movie>> -> {
+                    is Success<List<MovieShortInfo>> -> {
                         addNextPageToExistingOnes(result.data)
                     }
 
@@ -52,9 +52,9 @@ class HomeViewModel @Inject constructor(
 
     }
 
-    private fun addNextPageToExistingOnes(nextPage: List<Movie>) {
+    private fun addNextPageToExistingOnes(nextPage: List<MovieShortInfo>) {
         val existingPages = _moviesLD.value
-        var allPages = mutableListOf<Movie>()
+        var allPages = mutableListOf<MovieShortInfo>()
         if (existingPages != null) {
             allPages.addAll(existingPages)
         }

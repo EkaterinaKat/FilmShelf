@@ -13,7 +13,7 @@ import com.bumptech.glide.Glide
 import com.katyshevtseva.filmshelf.FilmShelfApp
 import com.katyshevtseva.filmshelf.R
 import com.katyshevtseva.filmshelf.databinding.ActivityMovieDetailsBinding
-import com.katyshevtseva.filmshelf.domain.model.Movie
+import com.katyshevtseva.filmshelf.domain.model.MovieShortInfo
 import com.katyshevtseva.filmshelf.presentation.adapter.TrailerAdapter
 import com.katyshevtseva.filmshelf.presentation.util.showAlertDialog
 import com.katyshevtseva.filmshelf.presentation.viewmodel.MovieDetailsViewModel
@@ -106,7 +106,7 @@ class MovieDetailsActivity : AppCompatActivity() {
         const val MOVIE_KP_ID_KEY = "MOVIE_ID_KEY"
         const val UNRESOLVED_MOVIE_ID = -1
 
-        fun newIntent(context: Context, movie: Movie): Intent {
+        fun newIntent(context: Context, movie: MovieShortInfo): Intent {
             val intent = Intent(context, MovieDetailsActivity::class.java)
             intent.putExtra(MOVIE_KP_ID_KEY, movie.kpId)
             return intent
