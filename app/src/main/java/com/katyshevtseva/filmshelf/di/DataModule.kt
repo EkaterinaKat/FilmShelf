@@ -5,10 +5,8 @@ import com.katyshevtseva.filmshelf.data.local.MovieDao
 import com.katyshevtseva.filmshelf.data.local.MovieDatabase
 import com.katyshevtseva.filmshelf.data.remote.ApiFactory
 import com.katyshevtseva.filmshelf.data.remote.ApiService
-import com.katyshevtseva.filmshelf.data.repository.LocalRepositoryImpl
-import com.katyshevtseva.filmshelf.data.repository.RemoteRepositoryImpl
-import com.katyshevtseva.filmshelf.domain.repository.LocalRepository
-import com.katyshevtseva.filmshelf.domain.repository.RemoteRepository
+import com.katyshevtseva.filmshelf.data.repository.MovieRepositoryImpl
+import com.katyshevtseva.filmshelf.domain.repository.MovieRepository
 import dagger.Binds
 import dagger.Module
 import dagger.Provides
@@ -18,11 +16,7 @@ interface DataModule {
 
     @Binds
     @ApplicationScope
-    fun bindRemoteRepository(impl: RemoteRepositoryImpl): RemoteRepository
-
-    @Binds
-    @ApplicationScope
-    fun bindLocalRepository(impl: LocalRepositoryImpl): LocalRepository
+    fun bindMovieRepository(impl: MovieRepositoryImpl): MovieRepository
 
     companion object {
 

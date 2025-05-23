@@ -2,8 +2,16 @@ package com.katyshevtseva.filmshelf.domain.repository
 
 import com.katyshevtseva.filmshelf.domain.model.Movie
 import com.katyshevtseva.filmshelf.domain.model.MovieShortInfo
+import com.katyshevtseva.filmshelf.domain.model.Trailer
+import com.katyshevtseva.filmshelf.domain.result.Result
 
-interface LocalRepository {
+interface MovieRepository {
+
+    suspend fun getBestMovies(page: Int): Result<List<MovieShortInfo>>
+
+    suspend fun getMovieDetails(kpId: Int): Result<Movie>
+
+    suspend fun getTrailers(movieKpId: Int): Result<List<Trailer>>
 
     suspend fun saveFavouriteMovie(movie: Movie)
 

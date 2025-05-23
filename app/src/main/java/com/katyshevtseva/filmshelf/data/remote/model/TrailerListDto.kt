@@ -4,5 +4,5 @@ import com.google.gson.annotations.SerializedName
 
 data class TrailerListDto(
     @SerializedName("videos")
-    val videos: VideosDto? = null
+    val videos: VideosDto
 )
