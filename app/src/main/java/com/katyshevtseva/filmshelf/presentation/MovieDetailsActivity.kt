@@ -87,9 +87,9 @@ class MovieDetailsActivity : AppCompatActivity() {
         }
         viewModel.isFavouriteLD.observe(this) {
             val resource = if (it) {
-                R.mipmap.favourite_on
+                R.drawable.favourite_on
             } else {
-                R.mipmap.favourite_off
+                R.drawable.favourite_off
             }
             binding.favouriteImageView.setImageResource(resource)
         }
