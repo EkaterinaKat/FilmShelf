@@ -20,4 +20,7 @@ interface MovieDao {
 
     @Query("SELECT EXISTS(SELECT 1 FROM movie WHERE kpId = :kpId)")
     suspend fun existsByKpId(kpId: Int): Boolean
+
+    @Query("SELECT * FROM movie WHERE kpId = :kpId LIMIT 1")
+    suspend fun findByKpId(kpId: Int): MovieEntity?
 }

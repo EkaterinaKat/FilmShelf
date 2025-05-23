@@ -1,5 +1,6 @@
 package com.katyshevtseva.filmshelf.data.repository
 
+import android.util.Log
 import com.katyshevtseva.filmshelf.data.local.LocalDataSource
 import com.katyshevtseva.filmshelf.data.mapper.MovieMapper
 import com.katyshevtseva.filmshelf.data.remote.RemoteDataSource
@@ -29,6 +30,13 @@ class MovieRepositoryImpl @Inject constructor(
     }
 
     override suspend fun getMovieDetails(kpId: Int): Result<Movie> {
+        val movieFromLocalStorage = localDataSource.findByKpId(kpId)
+        if (movieFromLocalStorage != null) {
+            Log.i("tag789456123", "localDataSource")
+            return Success(mapper.mapEntityToDomainModel(movieFromLocalStorage))
+        }
+
+        Log.i("tag789456123", "remoteDataSource")
         return try {
             Success(mapper.mapDtoToDomainModel(remoteDataSource.getMovieDetails(kpId)))
         } catch (e: Exception) {

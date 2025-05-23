@@ -22,4 +22,8 @@ class LocalDataSource @Inject constructor(
     suspend fun existsByKpId(kpId: Int): Boolean {
         return movieDao.existsByKpId(kpId)
     }
+
+    suspend fun findByKpId(kpId: Int): MovieEntity? {
+        return movieDao.findByKpId(kpId)
+    }
 }
