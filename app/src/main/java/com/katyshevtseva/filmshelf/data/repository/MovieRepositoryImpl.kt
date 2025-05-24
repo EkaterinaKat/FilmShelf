@@ -69,4 +69,14 @@ class MovieRepositoryImpl @Inject constructor(
     override suspend fun isMovieFavourite(kpId: Int): Boolean {
         return localDataSource.existsByKpId(kpId)
     }
+
+    override suspend fun searchMovieByTitle(searchString: String): Result<List<MovieShortInfo>> {
+        return try {
+            Success(remoteDataSource.searchMovieByTitle(searchString).movies.map {
+                mapper.mapDtoToDomainModel(it)
+            })
+        } catch (e: Exception) {
+            Error(e)
+        }
+    }
 }

@@ -31,4 +31,11 @@ interface ApiService {
         @Path("movieId") movieId: Int,
         @Query("token") token: String
     ): Response<TrailerListDto>
+
+    @GET("movie/search")
+    suspend fun searchByTitle(
+        @Query("page") page: Int,
+        @Query("query") query: String,
+        @Query("token") token: String
+    ): Response<MovieListDto>
 }

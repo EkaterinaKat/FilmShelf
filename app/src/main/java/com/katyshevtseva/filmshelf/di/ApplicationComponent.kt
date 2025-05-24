@@ -4,6 +4,7 @@ import android.app.Application
 import com.katyshevtseva.filmshelf.presentation.FavoritesFragment
 import com.katyshevtseva.filmshelf.presentation.HomeFragment
 import com.katyshevtseva.filmshelf.presentation.MovieDetailsActivity
+import com.katyshevtseva.filmshelf.presentation.SearchFragment
 import dagger.BindsInstance
 import dagger.Component
 
@@ -19,6 +20,8 @@ interface ApplicationComponent {
     fun inject(fragment: HomeFragment)
 
     fun inject(fragment: FavoritesFragment)
+
+    fun inject(fragment: SearchFragment)
 
     fun inject(activity: MovieDetailsActivity)
 

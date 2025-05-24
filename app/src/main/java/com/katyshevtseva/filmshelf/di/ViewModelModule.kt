@@ -3,6 +3,7 @@ package com.katyshevtseva.filmshelf.di
 import androidx.lifecycle.ViewModel
 import com.katyshevtseva.filmshelf.presentation.viewmodel.FavoritesViewModel
 import com.katyshevtseva.filmshelf.presentation.viewmodel.HomeViewModel
+import com.katyshevtseva.filmshelf.presentation.viewmodel.SearchViewModel
 import dagger.Binds
 import dagger.Module
 import dagger.multibindings.IntoMap
@@ -19,4 +20,9 @@ interface ViewModelModule {
     @IntoMap
     @ViewModelKey(FavoritesViewModel::class)
     fun bindFavoritesViewModel(viewModel: FavoritesViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(SearchViewModel::class)
+    fun bindSearchViewModel(viewModel: SearchViewModel): ViewModel
 }

@@ -20,4 +20,6 @@ interface MovieRepository {
     suspend fun getFavouriteMovies(): List<MovieShortInfo>
 
     suspend fun isMovieFavourite(kpId: Int): Boolean
+
+    suspend fun searchMovieByTitle(searchString: String): Result<List<MovieShortInfo>>
 }

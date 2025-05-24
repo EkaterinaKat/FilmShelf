@@ -24,7 +24,7 @@ class MainActivity : AppCompatActivity() {
             val selectedFragment: Fragment = when (item.itemId) {
                 R.id.navigation_home -> HomeFragment()
                 R.id.navigation_favorites -> FavoritesFragment()
-                R.id.navigation_account -> AccountFragment()
+                R.id.navigation_account -> SearchFragment()
                 else -> throw RuntimeException("Unknown item id")
             }
             supportFragmentManager

@@ -7,12 +7,14 @@ import androidx.lifecycle.viewModelScope
 import com.katyshevtseva.filmshelf.domain.model.MovieShortInfo
 import com.katyshevtseva.filmshelf.domain.result.Error
 import com.katyshevtseva.filmshelf.domain.result.Success
-import com.katyshevtseva.filmshelf.domain.usecase.GetBestMoviesUseCase
+import com.katyshevtseva.filmshelf.domain.usecase.SearchMovieUseCase
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-class HomeViewModel @Inject constructor(
-    private val getBestMoviesUseCase: GetBestMoviesUseCase
+class SearchViewModel @Inject constructor(
+    private val searchMovieUseCase: SearchMovieUseCase
 ) : ViewModel() {
 
     private val _moviesLD = MutableLiveData<List<MovieShortInfo>>()
@@ -27,21 +29,16 @@ class HomeViewModel @Inject constructor(
     val loadingLD: LiveData<Boolean>
         get() = _loadingLD
 
-    private var page = 0
+    private var searchJob: Job? = null
 
-    init {
-        loadNextPage()
-    }
-
-    fun loadNextPage() {
+    fun loadMovies(searchString: String) {
         if (_loadingLD.value != true) {
-            page++
             viewModelScope.launch {
                 _loadingLD.value = true
-                val result = getBestMoviesUseCase.invoke(page)
+                val result = searchMovieUseCase.invoke(searchString)
                 when (result) {
                     is Success<List<MovieShortInfo>> -> {
-                        addNextPageToExistingOnes(result.data)
+                        _moviesLD.value = result.data
                     }
 
                     is Error -> _errorLD.value = result.exception.message.toString()
@@ -49,16 +46,15 @@ class HomeViewModel @Inject constructor(
                 _loadingLD.value = false
             }
         }
-
     }
 
-    private fun addNextPageToExistingOnes(nextPage: List<MovieShortInfo>) {
-        val existingPages = _moviesLD.value
-        var allPages = mutableListOf<MovieShortInfo>()
-        if (existingPages != null) {
-            allPages.addAll(existingPages)
+    fun onSearchInput(input: CharSequence?) {
+        searchJob?.cancel()
+        searchJob = viewModelScope.launch {
+            delay(500)
+            input?.let {
+                loadMovies(it.toString())
+            }
         }
-        allPages.addAll(nextPage)
-        _moviesLD.value = allPages
     }
 }

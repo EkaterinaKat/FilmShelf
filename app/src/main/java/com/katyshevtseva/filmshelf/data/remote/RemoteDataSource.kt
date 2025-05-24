@@ -36,6 +36,12 @@ class RemoteDataSource @Inject constructor(
         }
     }
 
+    suspend fun searchMovieByTitle(searchString: String): MovieListDto {
+        return load {
+            apiService.searchByTitle(1, searchString, "2BW30XT-0E84FXT-PC1P59Z-1BW2MWB")
+        }
+    }
+
     private suspend fun <DTO> load(
         responseSupplier: suspend () -> Response<DTO>
     ): DTO {
