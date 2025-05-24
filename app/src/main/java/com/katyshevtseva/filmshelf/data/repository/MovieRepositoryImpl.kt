@@ -18,9 +18,12 @@ class MovieRepositoryImpl @Inject constructor(
     private val mapper: MovieMapper
 ) : MovieRepository {
 
-    override suspend fun getBestMovies(page: Int): Result<List<MovieShortInfo>> {
+    override suspend fun getBestMovies(
+        page: Int,
+        searchString: String?
+    ): Result<List<MovieShortInfo>> {
         return try {
-            Success(remoteDataSource.getBestMovies(page).movies.map {
+            Success(remoteDataSource.getBestMovies(page, searchString).movies.map {
                 mapper.mapDtoToDomainModel(it)
             })
         } catch (e: Exception) {

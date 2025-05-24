@@ -8,6 +8,8 @@ import com.katyshevtseva.filmshelf.domain.model.MovieShortInfo
 import com.katyshevtseva.filmshelf.domain.result.Error
 import com.katyshevtseva.filmshelf.domain.result.Success
 import com.katyshevtseva.filmshelf.domain.usecase.GetBestMoviesUseCase
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -29,6 +31,9 @@ class HomeViewModel @Inject constructor(
 
     private var page = 0
 
+    private var searchJob: Job? = null
+    private var searchString: String? = null
+
     init {
         loadNextPage()
     }
@@ -38,7 +43,7 @@ class HomeViewModel @Inject constructor(
             page++
             viewModelScope.launch {
                 _loadingLD.value = true
-                val result = getBestMoviesUseCase.invoke(page)
+                val result = getBestMoviesUseCase.invoke(page, searchString)
                 when (result) {
                     is Success<List<MovieShortInfo>> -> {
                         addNextPageToExistingOnes(result.data)
@@ -60,5 +65,22 @@ class HomeViewModel @Inject constructor(
         }
         allPages.addAll(nextPage)
         _moviesLD.value = allPages
+    }
+
+    fun onSearchInput(input: CharSequence?) {
+        searchJob?.cancel()
+        searchJob = viewModelScope.launch {
+            delay(500)
+            input?.let {
+                searchString = it.toString()
+                resetPagination()
+                loadNextPage()
+            }
+        }
+    }
+
+    fun resetPagination() {
+        page = 0
+        _moviesLD.value = listOf()
     }
 }

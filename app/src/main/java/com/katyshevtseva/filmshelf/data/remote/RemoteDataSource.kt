@@ -11,7 +11,7 @@ class RemoteDataSource @Inject constructor(
     private val apiService: ApiService
 ) {
 
-    suspend fun getBestMovies(page: Int): MovieListDto {
+    suspend fun getBestMovies(page: Int, searchString: String?): MovieListDto {
         return load {
             apiService.loadMovies(
                 page,
@@ -19,7 +19,8 @@ class RemoteDataSource @Inject constructor(
                 "votes.kp",
                 "-1",
                 "3-10",
-                "20"
+                "20",
+                searchString
             )
         }
     }
