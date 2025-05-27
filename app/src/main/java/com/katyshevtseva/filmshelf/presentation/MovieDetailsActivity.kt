@@ -74,7 +74,11 @@ class MovieDetailsActivity : AppCompatActivity() {
 
     private fun observeViewModel() {
         viewModel.movieLD.observe(this) { movie ->
-            Glide.with(this).load(movie.posterUrl).into(binding.posterImageView)
+            if (movie.posterUrl != null) {
+                Glide.with(this).load(movie.posterUrl).into(binding.posterImageView)
+            } else {
+                binding.posterImageView.setImageResource(R.mipmap.default_poster)
+            }
             binding.yearTextView.text = String.valueOf(movie.year)
             binding.titleTextView.text = movie.name
             binding.descTextView.text = movie.description

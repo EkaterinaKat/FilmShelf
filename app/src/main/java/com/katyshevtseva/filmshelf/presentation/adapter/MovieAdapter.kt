@@ -38,9 +38,13 @@ class MovieAdapter : RecyclerView.Adapter<MovieViewHolder>() {
         position: Int
     ) {
         val movie = movies[position]
-        Glide.with(holder.itemView)
-            .load(movie.posterUrl)
-            .into(holder.posterImageView)
+
+        if (movie.posterUrl != null) {
+            Glide.with(holder.itemView).load(movie.posterUrl).into(holder.posterImageView)
+        } else {
+            holder.posterImageView.setImageResource(R.mipmap.default_poster)
+        }
+
         holder.ratingTextView.text =
             String.format(Locale.getDefault(), "%.1f", movie.ratingKp)
         holder.ratingTextView.background = getRatingBackground(movie, holder.itemView.context)
