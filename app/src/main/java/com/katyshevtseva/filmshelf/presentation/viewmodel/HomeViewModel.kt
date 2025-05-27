@@ -5,14 +5,15 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.katyshevtseva.filmshelf.domain.model.MovieShortInfo
+import com.katyshevtseva.filmshelf.domain.model.SortType
 import com.katyshevtseva.filmshelf.domain.result.Error
 import com.katyshevtseva.filmshelf.domain.result.Success
-import com.katyshevtseva.filmshelf.domain.usecase.GetBestMoviesUseCase
+import com.katyshevtseva.filmshelf.domain.usecase.GetFilteredMoviesUseCase
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class HomeViewModel @Inject constructor(
-    private val getBestMoviesUseCase: GetBestMoviesUseCase
+    private val getFilteredMoviesUseCase: GetFilteredMoviesUseCase
 ) : ViewModel() {
 
     private val _moviesLD = MutableLiveData<List<MovieShortInfo>>()
@@ -29,6 +30,8 @@ class HomeViewModel @Inject constructor(
 
     private var page = 0
 
+    private var sortType = SortType.POPULAR_FIRST
+
     init {
         loadNextPage()
     }
@@ -38,7 +41,7 @@ class HomeViewModel @Inject constructor(
             page++
             viewModelScope.launch {
                 _loadingLD.value = true
-                val result = getBestMoviesUseCase.invoke(page)
+                val result = getFilteredMoviesUseCase.invoke(page, sortType)
                 when (result) {
                     is Success<List<MovieShortInfo>> -> {
                         addNextPageToExistingOnes(result.data)
@@ -49,7 +52,17 @@ class HomeViewModel @Inject constructor(
                 _loadingLD.value = false
             }
         }
+    }
 
+    fun onSortTypeSelect(newSortType: SortType) {
+        sortType = newSortType
+        resetPagination()
+        loadNextPage()
+    }
+
+    private fun resetPagination() {
+        page = 0
+        _moviesLD.value = listOf()
     }
 
     private fun addNextPageToExistingOnes(nextPage: List<MovieShortInfo>) {

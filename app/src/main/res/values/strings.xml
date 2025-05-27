@@ -5,4 +5,9 @@
     <string name="account">Аккаунт</string>
     <string name="error">Ошибка</string>
     <string name="search">Поиск</string>
+    <string name="new_">Новые</string>
+    <string name="old">Старые</string>
+    <string name="popular">Популярные</string>
+    <string name="high_rating">Высокий рейтинг</string>
+    <string name="first">Сначала</string>
 </resources>

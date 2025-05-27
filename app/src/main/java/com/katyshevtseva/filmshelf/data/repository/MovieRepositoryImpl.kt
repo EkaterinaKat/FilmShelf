@@ -5,6 +5,11 @@ import com.katyshevtseva.filmshelf.data.mapper.MovieMapper
 import com.katyshevtseva.filmshelf.data.remote.RemoteDataSource
 import com.katyshevtseva.filmshelf.domain.model.Movie
 import com.katyshevtseva.filmshelf.domain.model.MovieShortInfo
+import com.katyshevtseva.filmshelf.domain.model.SortType
+import com.katyshevtseva.filmshelf.domain.model.SortType.HIGH_RATING_FIRST
+import com.katyshevtseva.filmshelf.domain.model.SortType.NEW_FIRST
+import com.katyshevtseva.filmshelf.domain.model.SortType.OLD_FIRST
+import com.katyshevtseva.filmshelf.domain.model.SortType.POPULAR_FIRST
 import com.katyshevtseva.filmshelf.domain.model.Trailer
 import com.katyshevtseva.filmshelf.domain.repository.MovieRepository
 import com.katyshevtseva.filmshelf.domain.result.Error
@@ -18,9 +23,19 @@ class MovieRepositoryImpl @Inject constructor(
     private val mapper: MovieMapper
 ) : MovieRepository {
 
-    override suspend fun getBestMovies(page: Int): Result<List<MovieShortInfo>> {
+    override suspend fun getFilteredMovies(
+        page: Int,
+        sortType: SortType
+    ): Result<List<MovieShortInfo>> {
+
         return try {
-            Success(remoteDataSource.getBestMovies(page).movies.map {
+            val response = remoteDataSource.getFilteredMovies(
+                page,
+                getSortFieldString(sortType),
+                getSortOrderString(sortType),
+                MOVIE_TYPE
+            )
+            Success(response.movies.map {
                 mapper.mapDtoToDomainModel(it)
             })
         } catch (e: Exception) {
@@ -78,5 +93,24 @@ class MovieRepositoryImpl @Inject constructor(
         } catch (e: Exception) {
             Error(e)
         }
+    }
+
+    private fun getSortFieldString(sortType: SortType): String {
+        return when (sortType) {
+            POPULAR_FIRST -> "votes.kp"
+            HIGH_RATING_FIRST -> "rating.kp"
+            NEW_FIRST, OLD_FIRST -> "year"
+        }
+    }
+
+    private fun getSortOrderString(sortType: SortType): String {
+        return when (sortType) {
+            POPULAR_FIRST, HIGH_RATING_FIRST, NEW_FIRST -> "-1"
+            OLD_FIRST -> "1"
+        }
+    }
+
+    companion object {
+        const val MOVIE_TYPE = "movie"
     }
 }

@@ -11,15 +11,21 @@ class RemoteDataSource @Inject constructor(
     private val apiService: ApiService
 ) {
 
-    suspend fun getBestMovies(page: Int): MovieListDto {
+    suspend fun getFilteredMovies(
+        page: Int,
+        sortField: String,
+        sortOrder: String,
+        type: String
+    ): MovieListDto {
         return load {
             apiService.loadMovies(
                 page,
                 "2BW30XT-0E84FXT-PC1P59Z-1BW2MWB",
-                "votes.kp",
-                "-1",
+                sortField,
+                sortOrder,
                 "3-10",
-                "20"
+                "20",
+                type
             )
         }
     }

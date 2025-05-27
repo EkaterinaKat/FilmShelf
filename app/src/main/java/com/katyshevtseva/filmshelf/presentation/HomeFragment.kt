@@ -5,17 +5,21 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import com.katyshevtseva.filmshelf.FilmShelfApp
 import com.katyshevtseva.filmshelf.R
 import com.katyshevtseva.filmshelf.databinding.FragmentHomeBinding
+import com.katyshevtseva.filmshelf.domain.model.SortType
 import com.katyshevtseva.filmshelf.presentation.adapter.MovieAdapter
 import com.katyshevtseva.filmshelf.presentation.util.showAlertDialog
 import com.katyshevtseva.filmshelf.presentation.viewmodel.HomeViewModel
 import com.katyshevtseva.filmshelf.presentation.viewmodel.ViewModelFactory
 import javax.inject.Inject
+
 
 class HomeFragment : Fragment() {
 
@@ -54,6 +58,7 @@ class HomeFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         setupRecycleView()
         observeViewModel()
+        setupSortMenu()
     }
 
     override fun onDestroyView() {
@@ -88,5 +93,40 @@ class HomeFragment : Fragment() {
             else
                 binding.loadingProgressBar.visibility = View.GONE
         }
+    }
+
+    private fun setupSortMenu() {
+        val sortTypes = arrayOf(
+            SortTypeWrapper(SortType.POPULAR_FIRST, resources.getString(R.string.popular)),
+            SortTypeWrapper(SortType.HIGH_RATING_FIRST, resources.getString(R.string.high_rating)),
+            SortTypeWrapper(SortType.NEW_FIRST, resources.getString(R.string.new_)),
+            SortTypeWrapper(SortType.OLD_FIRST, resources.getString(R.string.old))
+        )
+
+        val adapter = ArrayAdapter(requireActivity(), R.layout.spinner_item, sortTypes)
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        binding.sortTypeSpinner.adapter = adapter
+
+        binding.sortTypeSpinner.onItemSelectedListener =
+            object : AdapterView.OnItemSelectedListener {
+                override fun onItemSelected(
+                    parent: AdapterView<*>,
+                    view: View,
+                    position: Int,
+                    id: Long
+                ) {
+                    val selectedItem = sortTypes[position]
+                    viewModel.onSortTypeSelect(selectedItem.sortType)
+                }
+
+                override fun onNothingSelected(parent: AdapterView<*>) {}
+            }
+    }
+
+    private class SortTypeWrapper(
+        val sortType: SortType,
+        val title: String
+    ) {
+        override fun toString() = title
     }
 }

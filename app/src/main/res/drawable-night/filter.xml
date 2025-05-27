@@ -1,0 +1,78 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="256dp"
+    android:height="256dp"
+    android:viewportWidth="256"
+    android:viewportHeight="256">
+    <path
+        android:fillColor="#FFFFFF"
+        android:fillType="nonZero"
+        android:pathData="M243.07,218.93L154.96,218.93c-6.21,0 -11.24,-5.03 -11.24,-11.24s5.03,-11.24 11.24,-11.24L243.07,196.45c6.21,0 11.24,5.03 11.24,11.24S249.27,218.93 243.07,218.93z"
+        android:strokeWidth="2.81"
+        android:strokeColor="#00000000"
+        android:strokeLineCap="butt"
+        android:strokeLineJoin="miter" />
+    <path
+        android:fillColor="#FFFFFF"
+        android:fillType="nonZero"
+        android:pathData="M152.86,59.27L12.65,59.27c-6.21,0 -11.24,-5.03 -11.24,-11.24s5.03,-11.24 11.24,-11.24l140.21,0c6.21,0 11.24,5.03 11.24,11.24S159.06,59.27 152.86,59.27z"
+        android:strokeWidth="2.81"
+        android:strokeColor="#00000000"
+        android:strokeLineCap="butt"
+        android:strokeLineJoin="miter" />
+    <path
+        android:fillColor="#FFFFFF"
+        android:fillType="nonZero"
+        android:pathData="M243.07,139.1L89.72,139.1c-6.21,0 -11.24,-5.03 -11.24,-11.24s5.03,-11.24 11.24,-11.24L243.07,116.62c6.21,0 11.24,5.03 11.24,11.24S249.27,139.1 243.07,139.1z"
+        android:strokeWidth="2.81"
+        android:strokeColor="#00000000"
+        android:strokeLineCap="butt"
+        android:strokeLineJoin="miter" />
+    <path
+        android:fillColor="#FFFFFF"
+        android:fillType="nonZero"
+        android:pathData="M102.85,218.93L12.65,218.93c-6.21,0 -11.24,-5.03 -11.24,-11.24s5.03,-11.24 11.24,-11.24l90.21,0c6.21,0 11.24,5.03 11.24,11.24S109.06,218.93 102.85,218.93z"
+        android:strokeWidth="2.81"
+        android:strokeColor="#00000000"
+        android:strokeLineCap="butt"
+        android:strokeLineJoin="miter" />
+    <path
+        android:fillColor="#FFFFFF"
+        android:fillType="nonZero"
+        android:pathData="M39.72,139.1L12.65,139.1c-6.21,0 -11.24,-5.03 -11.24,-11.24s5.03,-11.24 11.24,-11.24l27.07,0c6.21,0 11.24,5.03 11.24,11.24S45.92,139.1 39.72,139.1z"
+        android:strokeWidth="2.81"
+        android:strokeColor="#00000000"
+        android:strokeLineCap="butt"
+        android:strokeLineJoin="miter" />
+    <path
+        android:fillColor="#FFFFFF"
+        android:fillType="nonZero"
+        android:pathData="M243.07,59.27L203.35,59.27c-6.21,0 -11.24,-5.03 -11.24,-11.24s5.03,-11.24 11.24,-11.24L243.07,36.79c6.21,0 11.24,5.03 11.24,11.24S249.27,59.27 243.07,59.27z"
+        android:strokeWidth="2.81"
+        android:strokeColor="#00000000"
+        android:strokeLineCap="butt"
+        android:strokeLineJoin="miter" />
+    <path
+        android:fillColor="#FFFFFF"
+        android:fillType="nonZero"
+        android:pathData="M143.23,232.69L112.49,232.69c-5.32,0 -9.63,-4.31 -9.63,-9.63l0,-30.74c0,-5.32 4.31,-9.63 9.63,-9.63l30.74,0c5.32,0 9.63,4.31 9.63,9.63l0,30.74C152.86,228.38 148.55,232.69 143.23,232.69z"
+        android:strokeWidth="2.81"
+        android:strokeColor="#00000000"
+        android:strokeLineCap="butt"
+        android:strokeLineJoin="miter" />
+    <path
+        android:fillColor="#FFFFFF"
+        android:fillType="nonZero"
+        android:pathData="M80.09,152.86L49.35,152.86c-5.32,0 -9.63,-4.31 -9.63,-9.63L39.71,112.49c0,-5.32 4.31,-9.63 9.63,-9.63L80.09,102.85c5.32,0 9.63,4.31 9.63,9.63l0,30.74C89.72,148.55 85.41,152.86 80.09,152.86z"
+        android:strokeWidth="2.81"
+        android:strokeColor="#00000000"
+        android:strokeLineCap="butt"
+        android:strokeLineJoin="miter" />
+    <path
+        android:fillColor="#FFFFFF"
+        android:fillType="nonZero"
+        android:pathData="M193.23,73.03l-30.74,0c-5.32,0 -9.63,-4.31 -9.63,-9.63l0,-30.74c0,-5.32 4.31,-9.63 9.63,-9.63l30.74,0c5.32,0 9.63,4.31 9.63,9.63l0,30.74C202.86,68.72 198.55,73.03 193.23,73.03z"
+        android:strokeWidth="2.81"
+        android:strokeColor="#00000000"
+        android:strokeLineCap="butt"
+        android:strokeLineJoin="miter" />
+</vector>
