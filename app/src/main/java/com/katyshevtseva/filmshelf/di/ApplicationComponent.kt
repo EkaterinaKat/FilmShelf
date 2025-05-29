@@ -2,6 +2,7 @@ package com.katyshevtseva.filmshelf.di
 
 import android.app.Application
 import com.katyshevtseva.filmshelf.presentation.FavoritesFragment
+import com.katyshevtseva.filmshelf.presentation.FiltersActivity
 import com.katyshevtseva.filmshelf.presentation.HomeFragment
 import com.katyshevtseva.filmshelf.presentation.MovieDetailsActivity
 import com.katyshevtseva.filmshelf.presentation.SearchFragment
@@ -24,6 +25,8 @@ interface ApplicationComponent {
     fun inject(fragment: SearchFragment)
 
     fun inject(activity: MovieDetailsActivity)
+
+    fun inject(activity: FiltersActivity)
 
     @Component.Factory
     interface Factory {

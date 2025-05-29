@@ -10,4 +10,7 @@
     <string name="popular">Популярные</string>
     <string name="high_rating">Высокий рейтинг</string>
     <string name="first">Сначала</string>
+    <string name="genre">Жанр</string>
+    <string name="apply">Применить</string>
+    <string name="country">Страна</string>
 </resources>

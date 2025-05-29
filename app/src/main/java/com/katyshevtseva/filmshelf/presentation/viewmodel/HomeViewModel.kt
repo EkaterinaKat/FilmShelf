@@ -32,10 +32,6 @@ class HomeViewModel @Inject constructor(
 
     private var sortType = SortType.POPULAR_FIRST
 
-    init {
-        loadNextPage()
-    }
-
     fun loadNextPage() {
         if (_loadingLD.value != true) {
             page++

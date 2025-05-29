@@ -2,6 +2,7 @@ package com.katyshevtseva.filmshelf.data.remote
 
 import com.katyshevtseva.filmshelf.data.remote.model.MovieDto
 import com.katyshevtseva.filmshelf.data.remote.model.MovieListDto
+import com.katyshevtseva.filmshelf.data.remote.model.PossibleValueDto
 import com.katyshevtseva.filmshelf.data.remote.model.TrailerListDto
 import retrofit2.Response
 import java.io.IOException
@@ -45,6 +46,12 @@ class RemoteDataSource @Inject constructor(
     suspend fun searchMovieByTitle(searchString: String): MovieListDto {
         return load {
             apiService.searchByTitle(1, searchString, "2BW30XT-0E84FXT-PC1P59Z-1BW2MWB")
+        }
+    }
+
+    suspend fun getPossibleValue(field: String): List<PossibleValueDto> {
+        return load {
+            apiService.loadPossibleValue(field, "2BW30XT-0E84FXT-PC1P59Z-1BW2MWB")
         }
     }
 

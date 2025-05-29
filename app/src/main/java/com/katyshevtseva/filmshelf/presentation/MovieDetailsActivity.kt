@@ -19,6 +19,7 @@ import com.katyshevtseva.filmshelf.presentation.util.showAlertDialog
 import com.katyshevtseva.filmshelf.presentation.viewmodel.MovieDetailsViewModel
 import java.lang.String
 import javax.inject.Inject
+import kotlin.apply
 import kotlin.getValue
 import kotlin.lazy
 
@@ -111,9 +112,9 @@ class MovieDetailsActivity : AppCompatActivity() {
         const val UNRESOLVED_MOVIE_ID = -1
 
         fun newIntent(context: Context, movie: MovieShortInfo): Intent {
-            val intent = Intent(context, MovieDetailsActivity::class.java)
-            intent.putExtra(MOVIE_KP_ID_KEY, movie.kpId)
-            return intent
+            return Intent(context, MovieDetailsActivity::class.java).apply {
+                putExtra(MOVIE_KP_ID_KEY, movie.kpId)
+            }
         }
     }
 }

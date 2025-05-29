@@ -1,5 +1,7 @@
 package com.katyshevtseva.filmshelf.domain.repository
 
+import com.katyshevtseva.filmshelf.domain.model.Country
+import com.katyshevtseva.filmshelf.domain.model.Genre
 import com.katyshevtseva.filmshelf.domain.model.Movie
 import com.katyshevtseva.filmshelf.domain.model.MovieShortInfo
 import com.katyshevtseva.filmshelf.domain.model.SortType
@@ -26,4 +28,8 @@ interface MovieRepository {
     suspend fun isMovieFavourite(kpId: Int): Boolean
 
     suspend fun searchMovieByTitle(searchString: String): Result<List<MovieShortInfo>>
+
+    suspend fun getGenres(): Result<List<Genre>>
+
+    suspend fun getCountries(): Result<List<Country>>
 }

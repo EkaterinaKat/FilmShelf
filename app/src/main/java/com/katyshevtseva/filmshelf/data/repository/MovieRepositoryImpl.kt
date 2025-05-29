@@ -3,6 +3,8 @@ package com.katyshevtseva.filmshelf.data.repository
 import com.katyshevtseva.filmshelf.data.local.LocalDataSource
 import com.katyshevtseva.filmshelf.data.mapper.MovieMapper
 import com.katyshevtseva.filmshelf.data.remote.RemoteDataSource
+import com.katyshevtseva.filmshelf.domain.model.Country
+import com.katyshevtseva.filmshelf.domain.model.Genre
 import com.katyshevtseva.filmshelf.domain.model.Movie
 import com.katyshevtseva.filmshelf.domain.model.MovieShortInfo
 import com.katyshevtseva.filmshelf.domain.model.SortType
@@ -95,6 +97,27 @@ class MovieRepositoryImpl @Inject constructor(
         }
     }
 
+    override suspend fun getGenres(): Result<List<Genre>> {
+        return try {
+            Success(remoteDataSource.getPossibleValue(GENRE_FIELD).map {
+                mapper.mapPossibleValueToDomainGenre(it)
+            })
+        } catch (e: Exception) {
+            Error(e)
+        }
+    }
+
+    override suspend fun getCountries(): Result<List<Country>> {
+        return try {
+            Success(remoteDataSource.getPossibleValue(COUNTRY_FIELD).map {
+                mapper.mapPossibleValueToDomainCountry(it)
+            })
+        } catch (e: Exception) {
+            Error(e)
+        }
+    }
+
+
     private fun getSortFieldString(sortType: SortType): String {
         return when (sortType) {
             POPULAR_FIRST -> "votes.kp"
@@ -112,5 +135,7 @@ class MovieRepositoryImpl @Inject constructor(
 
     companion object {
         const val MOVIE_TYPE = "movie"
+        const val GENRE_FIELD = "genres.name"
+        const val COUNTRY_FIELD = "countries.name"
     }
 }

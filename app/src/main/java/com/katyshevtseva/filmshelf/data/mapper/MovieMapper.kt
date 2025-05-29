@@ -3,7 +3,10 @@ package com.katyshevtseva.filmshelf.data.mapper
 import com.katyshevtseva.filmshelf.data.local.entity.MovieEntity
 import com.katyshevtseva.filmshelf.data.remote.model.MovieDto
 import com.katyshevtseva.filmshelf.data.remote.model.MovieShortInfoDto
+import com.katyshevtseva.filmshelf.data.remote.model.PossibleValueDto
 import com.katyshevtseva.filmshelf.data.remote.model.TrailerDto
+import com.katyshevtseva.filmshelf.domain.model.Country
+import com.katyshevtseva.filmshelf.domain.model.Genre
 import com.katyshevtseva.filmshelf.domain.model.Movie
 import com.katyshevtseva.filmshelf.domain.model.MovieShortInfo
 import com.katyshevtseva.filmshelf.domain.model.Trailer
@@ -55,5 +58,15 @@ class MovieMapper @Inject constructor() {
         name = entity.name,
         posterUrl = entity.posterUrl,
         ratingKp = entity.ratingKp
+    )
+
+    fun mapPossibleValueToDomainGenre(dto: PossibleValueDto) = Genre(
+        name = dto.name,
+        slug = dto.slug
+    )
+
+    fun mapPossibleValueToDomainCountry(dto: PossibleValueDto) = Country(
+        name = dto.name,
+        slug = dto.slug
     )
 }
