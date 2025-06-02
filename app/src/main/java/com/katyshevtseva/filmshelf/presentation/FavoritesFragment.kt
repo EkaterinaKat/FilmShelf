@@ -81,7 +81,7 @@ class FavoritesFragment : Fragment() {
 
     private fun observeViewModel() {
         viewModel.moviesLD.observe(viewLifecycleOwner) {
-            movieAdapter.movies = it
+            movieAdapter.submitList(it)
         }
     }
 }

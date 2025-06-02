@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.content.ContextCompat
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.katyshevtseva.filmshelf.R
@@ -15,13 +16,7 @@ import com.katyshevtseva.filmshelf.domain.model.MovieShortInfo
 import com.katyshevtseva.filmshelf.presentation.util.NULL_RATING_FOR_DISPLAY
 import java.util.Locale
 
-class MovieAdapter : RecyclerView.Adapter<MovieViewHolder>() {
-    var movies: List<MovieShortInfo> = listOf()
-        set(value) {
-            field = value
-            notifyDataSetChanged()
-        }
-
+class MovieAdapter : ListAdapter<MovieShortInfo, MovieViewHolder>(MovieItemDiffCallback()) {
     var onMovieClickListener: ((MovieShortInfo) -> Unit)? = null
     var onReachEndListener: (() -> Unit)? = null
 
@@ -37,7 +32,7 @@ class MovieAdapter : RecyclerView.Adapter<MovieViewHolder>() {
         holder: MovieViewHolder,
         position: Int
     ) {
-        val movie = movies[position]
+        val movie = getItem(position)
 
         if (movie.posterUrl != null) {
             Glide.with(holder.itemView).load(movie.posterUrl).into(holder.posterImageView)
@@ -53,13 +48,9 @@ class MovieAdapter : RecyclerView.Adapter<MovieViewHolder>() {
             onMovieClickListener?.invoke(movie)
         }
 
-        if (position >= movies.size - PRELOAD_OFFSET) {
+        if (position >= currentList.size - PRELOAD_OFFSET) {
             onReachEndListener?.invoke()
         }
-    }
-
-    override fun getItemCount(): Int {
-        return movies.size
     }
 
     private fun getRatingBackground(movie: MovieShortInfo, context: Context): Drawable? {

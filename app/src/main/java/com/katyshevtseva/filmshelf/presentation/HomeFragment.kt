@@ -84,7 +84,7 @@ class HomeFragment : Fragment() {
 
     private fun observeViewModel() {
         viewModel.moviesLD.observe(viewLifecycleOwner) {
-            movieAdapter.movies = it
+            movieAdapter.submitList(it)
         }
         viewModel.errorLD.observe(viewLifecycleOwner) {
             showAlertDialog(requireActivity(), resources.getString(R.string.error), it)
