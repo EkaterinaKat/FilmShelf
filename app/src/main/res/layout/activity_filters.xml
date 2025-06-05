@@ -22,7 +22,7 @@
             android:layout_marginStart="@dimen/filter_activity_fields"
             android:layout_weight="1"
             android:text="@string/genre"
-            android:textSize="18sp" />
+            android:textSize="@dimen/default_text_size" />
 
         <Spinner
             android:id="@+id/genreSpinner"
@@ -40,7 +40,7 @@
         android:layout_height="wrap_content"
         android:gravity="center"
         android:orientation="horizontal"
-        app:layout_constraintBottom_toTopOf="@id/applyButton"
+        app:layout_constraintBottom_toTopOf="@id/yearLayout"
         app:layout_constraintTop_toBottomOf="@id/genreLayout">
 
         <TextView
@@ -48,10 +48,9 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/filter_activity_fields"
-
             android:layout_weight="1"
             android:text="@string/country"
-            android:textSize="18sp" />
+            android:textSize="@dimen/default_text_size" />
 
         <Spinner
             android:id="@+id/countrySpinner"
@@ -62,6 +61,31 @@
 
     </LinearLayout>
 
+    <LinearLayout
+        android:id="@+id/yearLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toTopOf="@id/applyButton"
+        app:layout_constraintTop_toBottomOf="@id/countryLayout">
+
+        <TextView
+            android:id="@+id/yearTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/default_text_size"
+            tools:text="1990-2022" />
+
+        <com.google.android.material.slider.RangeSlider
+            android:id="@+id/yearSlider"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/filter_activity_fields"
+            android:layout_marginEnd="@dimen/filter_activity_fields"
+            android:stepSize="1"
+            app:labelBehavior="gone" />
+    </LinearLayout>
 
     <Button
         android:id="@+id/applyButton"
@@ -71,7 +95,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/countryLayout" />
+        app:layout_constraintTop_toBottomOf="@id/yearLayout" />
 
     <ProgressBar
         android:id="@+id/loadingProgressBar"

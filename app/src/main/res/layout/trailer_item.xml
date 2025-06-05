@@ -14,7 +14,7 @@
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:textColor="@color/white"
-        android:textSize="18sp"
+        android:textSize="@dimen/default_text_size"
         tools:text="Trailer name" />
 
     <ImageView

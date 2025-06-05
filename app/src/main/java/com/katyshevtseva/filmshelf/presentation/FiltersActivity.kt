@@ -3,13 +3,13 @@ package com.katyshevtseva.filmshelf.presentation
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import com.katyshevtseva.filmshelf.FilmShelfApp
 import com.katyshevtseva.filmshelf.R
 import com.katyshevtseva.filmshelf.databinding.ActivityFiltersBinding
+import com.katyshevtseva.filmshelf.domain.model.YearRange
 import com.katyshevtseva.filmshelf.presentation.util.setupSpinner
 import com.katyshevtseva.filmshelf.presentation.util.showAlertDialog
 import com.katyshevtseva.filmshelf.presentation.viewmodel.FiltersViewModel
@@ -57,8 +57,27 @@ class FiltersActivity : AppCompatActivity() {
             else
                 binding.loadingProgressBar.visibility = View.GONE
         }
-        viewModel.yearRangeLD.observe(this) {
-            Log.i("tag8888888", "${it.start} - ${it.end}")
+        viewModel.entireYearRangeLD.observe(this) {
+            setupYearSlider(it)
+        }
+        viewModel.selectedYearRangeStringLD.observe(this) {
+            binding.yearTextView.text = it
+        }
+    }
+
+    private fun setupYearSlider(yearRange: YearRange) {
+        val floatStart = yearRange.start.toFloat()
+        val floatEnd = yearRange.end.toFloat()
+
+        binding.yearSlider.valueFrom = floatStart
+        binding.yearSlider.valueTo = floatEnd
+        binding.yearSlider.values = listOf(floatStart, floatEnd)
+
+        viewModel.onYearRangeSelect(yearRange.start, yearRange.end)
+
+        binding.yearSlider.addOnChangeListener { slider, value, fromUser ->
+            val values = slider.values
+            viewModel.onYearRangeSelect(values[0].toInt(), values[1].toInt())
         }
     }
 

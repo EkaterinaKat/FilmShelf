@@ -47,3 +47,7 @@ fun <T> setupSpinner(
             override fun onNothingSelected(parent: AdapterView<*>) {}
         }
 }
+
+fun getYearRangeString(start: Int, end: Int): String {
+    return "$start - $end"
+}

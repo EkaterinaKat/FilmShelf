@@ -12,6 +12,7 @@ import com.katyshevtseva.filmshelf.domain.result.Success
 import com.katyshevtseva.filmshelf.domain.usecase.GetCountriesUseCase
 import com.katyshevtseva.filmshelf.domain.usecase.GetGenresUseCase
 import com.katyshevtseva.filmshelf.domain.usecase.GetYearSelectRangeUseCase
+import com.katyshevtseva.filmshelf.presentation.util.getYearRangeString
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -37,16 +38,20 @@ class FiltersViewModel @Inject constructor(
     val loadingLD: LiveData<Boolean>
         get() = _loadingLD
 
-    private val _yearRangeLD = MutableLiveData<YearRange>()
-    val yearRangeLD: LiveData<YearRange>
-        get() = _yearRangeLD
+    private val _entireYearRangeLD = MutableLiveData<YearRange>()
+    val entireYearRangeLD: LiveData<YearRange>
+        get() = _entireYearRangeLD
+
+    private val _selectedYearRangeStringLD = MutableLiveData<String>()
+    val selectedYearRangeStringLD: LiveData<String>
+        get() = _selectedYearRangeStringLD
 
     init {
         _loadingLD.value = true
 
         val genresJob = viewModelScope.launch { loadGenres() }
         val countriesJob = viewModelScope.launch { loadCountries() }
-        val yearsJob = viewModelScope.launch { loadYearRange() }
+        val yearsJob = viewModelScope.launch { loadEntireYearRange() }
 
         viewModelScope.launch {
             genresJob.join()
@@ -62,6 +67,10 @@ class FiltersViewModel @Inject constructor(
 
     fun onCountrySelect(country: Country) {
 
+    }
+
+    fun onYearRangeSelect(start: Int, end: Int) {
+        _selectedYearRangeStringLD.value = getYearRangeString(start, end)
     }
 
     private suspend fun loadGenres() {
@@ -80,10 +89,10 @@ class FiltersViewModel @Inject constructor(
         }
     }
 
-    private suspend fun loadYearRange() {
+    private suspend fun loadEntireYearRange() {
         val result = getYearSelectRangeUseCase.invoke()
         when (result) {
-            is Success<YearRange> -> _yearRangeLD.value = result.data
+            is Success<YearRange> -> _entireYearRangeLD.value = result.data
             is Error -> _errorLD.value = result.exception.message.toString()
         }
     }
