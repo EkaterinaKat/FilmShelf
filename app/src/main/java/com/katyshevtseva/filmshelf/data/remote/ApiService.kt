@@ -18,7 +18,7 @@ interface ApiService {
         @Query("sortField") sortField: String,
         @Query("sortType") sortType: String,
         @Query("rating.kp") ratingKp: String,
-        @Query("limit") limit: String,
+        @Query("limit") limit: Int,
         @Query("type") type: String
     ): Response<MovieListDto>
 

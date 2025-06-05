@@ -6,6 +6,7 @@ import com.katyshevtseva.filmshelf.domain.model.Movie
 import com.katyshevtseva.filmshelf.domain.model.MovieShortInfo
 import com.katyshevtseva.filmshelf.domain.model.SortType
 import com.katyshevtseva.filmshelf.domain.model.Trailer
+import com.katyshevtseva.filmshelf.domain.model.YearRange
 import com.katyshevtseva.filmshelf.domain.result.Result
 
 interface MovieRepository {
@@ -32,4 +33,6 @@ interface MovieRepository {
     suspend fun getGenres(): Result<List<Genre>>
 
     suspend fun getCountries(): Result<List<Country>>
+
+    suspend fun getYearSelectRange(): Result<YearRange>
 }

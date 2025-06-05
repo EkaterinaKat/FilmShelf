@@ -6,16 +6,19 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.katyshevtseva.filmshelf.domain.model.Country
 import com.katyshevtseva.filmshelf.domain.model.Genre
+import com.katyshevtseva.filmshelf.domain.model.YearRange
 import com.katyshevtseva.filmshelf.domain.result.Error
 import com.katyshevtseva.filmshelf.domain.result.Success
 import com.katyshevtseva.filmshelf.domain.usecase.GetCountriesUseCase
 import com.katyshevtseva.filmshelf.domain.usecase.GetGenresUseCase
+import com.katyshevtseva.filmshelf.domain.usecase.GetYearSelectRangeUseCase
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class FiltersViewModel @Inject constructor(
     private val getGenresUseCase: GetGenresUseCase,
-    private val getCountriesUseCase: GetCountriesUseCase
+    private val getCountriesUseCase: GetCountriesUseCase,
+    private val getYearSelectRangeUseCase: GetYearSelectRangeUseCase
 ) : ViewModel() {
 
     private val _genresLD = MutableLiveData<List<Genre>>()
@@ -34,15 +37,21 @@ class FiltersViewModel @Inject constructor(
     val loadingLD: LiveData<Boolean>
         get() = _loadingLD
 
+    private val _yearRangeLD = MutableLiveData<YearRange>()
+    val yearRangeLD: LiveData<YearRange>
+        get() = _yearRangeLD
+
     init {
         _loadingLD.value = true
 
         val genresJob = viewModelScope.launch { loadGenres() }
         val countriesJob = viewModelScope.launch { loadCountries() }
+        val yearsJob = viewModelScope.launch { loadYearRange() }
 
         viewModelScope.launch {
             genresJob.join()
             countriesJob.join()
+            yearsJob.join()
             _loadingLD.value = false
         }
     }
@@ -67,6 +76,14 @@ class FiltersViewModel @Inject constructor(
         val result = getCountriesUseCase.invoke()
         when (result) {
             is Success<List<Country>> -> _countriesLD.value = result.data
+            is Error -> _errorLD.value = result.exception.message.toString()
+        }
+    }
+
+    private suspend fun loadYearRange() {
+        val result = getYearSelectRangeUseCase.invoke()
+        when (result) {
+            is Success<YearRange> -> _yearRangeLD.value = result.data
             is Error -> _errorLD.value = result.exception.message.toString()
         }
     }

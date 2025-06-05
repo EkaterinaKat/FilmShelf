@@ -13,5 +13,8 @@ data class MovieShortInfoDto(
     val poster: PosterDto? = null,
 
     @SerializedName("rating")
-    val rating: RatingDto? = null
+    val rating: RatingDto? = null,
+
+    @SerializedName("year")
+    val year: Int? = null
 )

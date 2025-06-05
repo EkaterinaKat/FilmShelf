@@ -3,6 +3,7 @@ package com.katyshevtseva.filmshelf.presentation
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
@@ -55,6 +56,9 @@ class FiltersActivity : AppCompatActivity() {
                 binding.loadingProgressBar.visibility = View.VISIBLE
             else
                 binding.loadingProgressBar.visibility = View.GONE
+        }
+        viewModel.yearRangeLD.observe(this) {
+            Log.i("tag8888888", "${it.start} - ${it.end}")
         }
     }
 

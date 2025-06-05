@@ -16,6 +16,8 @@ class RemoteDataSource @Inject constructor(
         page: Int,
         sortField: String,
         sortOrder: String,
+        rating: String,
+        limit: Int,
         type: String
     ): MovieListDto {
         return load {
@@ -24,8 +26,8 @@ class RemoteDataSource @Inject constructor(
                 "2BW30XT-0E84FXT-PC1P59Z-1BW2MWB",
                 sortField,
                 sortOrder,
-                "3-10",
-                "20",
+                rating,
+                limit,
                 type
             )
         }

@@ -13,10 +13,12 @@ import com.katyshevtseva.filmshelf.domain.model.SortType.NEW_FIRST
 import com.katyshevtseva.filmshelf.domain.model.SortType.OLD_FIRST
 import com.katyshevtseva.filmshelf.domain.model.SortType.POPULAR_FIRST
 import com.katyshevtseva.filmshelf.domain.model.Trailer
+import com.katyshevtseva.filmshelf.domain.model.YearRange
 import com.katyshevtseva.filmshelf.domain.repository.MovieRepository
 import com.katyshevtseva.filmshelf.domain.result.Error
 import com.katyshevtseva.filmshelf.domain.result.Result
 import com.katyshevtseva.filmshelf.domain.result.Success
+import java.util.Calendar
 import javax.inject.Inject
 
 class MovieRepositoryImpl @Inject constructor(
@@ -35,6 +37,8 @@ class MovieRepositoryImpl @Inject constructor(
                 page,
                 getSortFieldString(sortType),
                 getSortOrderString(sortType),
+                RATING,
+                PAGE_SIZE,
                 MOVIE_TYPE
             )
             Success(response.movies.map {
@@ -117,6 +121,29 @@ class MovieRepositoryImpl @Inject constructor(
         }
     }
 
+    override suspend fun getYearSelectRange(): Result<YearRange> {
+        return try {
+            val response = remoteDataSource.getFilteredMovies(
+                1,
+                getSortFieldString(OLD_FIRST),
+                getSortOrderString(OLD_FIRST),
+                RATING,
+                1,
+                MOVIE_TYPE
+            )
+
+            Success(
+                YearRange(
+                    response.movies[0].year
+                        ?: throw RuntimeException("unable to get year of oldest movie"),
+                    Calendar.getInstance().get(Calendar.YEAR)
+                )
+            )
+        } catch (e: Exception) {
+            Error(e)
+        }
+    }
+
 
     private fun getSortFieldString(sortType: SortType): String {
         return when (sortType) {
@@ -137,5 +164,7 @@ class MovieRepositoryImpl @Inject constructor(
         const val MOVIE_TYPE = "movie"
         const val GENRE_FIELD = "genres.name"
         const val COUNTRY_FIELD = "countries.name"
+        const val PAGE_SIZE = 20
+        const val RATING = "3-10"
     }
 }
