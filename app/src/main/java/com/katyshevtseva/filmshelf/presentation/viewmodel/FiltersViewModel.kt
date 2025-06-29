@@ -82,7 +82,7 @@ class FiltersViewModel @Inject constructor(
     private suspend fun loadGenres() {
         val result = getGenresUseCase.invoke()
         when (result) {
-            is Success<List<Genre>> -> _genresLD.value = result.data
+            is Success<List<Genre>> -> _genresLD.value = listOf(Genre.emptyGenre) + result.data
             is Error -> _errorLD.value = result.exception.message.toString()
         }
     }
@@ -90,7 +90,8 @@ class FiltersViewModel @Inject constructor(
     private suspend fun loadCountries() {
         val result = getCountriesUseCase.invoke()
         when (result) {
-            is Success<List<Country>> -> _countriesLD.value = result.data
+            is Success<List<Country>> -> _countriesLD.value =
+                listOf(Country.emptyCountry) + result.data
             is Error -> _errorLD.value = result.exception.message.toString()
         }
     }
