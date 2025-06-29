@@ -4,11 +4,13 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import android.widget.RadioButton
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import com.katyshevtseva.filmshelf.FilmShelfApp
 import com.katyshevtseva.filmshelf.R
 import com.katyshevtseva.filmshelf.databinding.ActivityFiltersBinding
+import com.katyshevtseva.filmshelf.domain.model.RatingCategory
 import com.katyshevtseva.filmshelf.domain.model.YearRange
 import com.katyshevtseva.filmshelf.presentation.util.setupSpinner
 import com.katyshevtseva.filmshelf.presentation.util.showAlertDialog
@@ -39,6 +41,7 @@ class FiltersActivity : AppCompatActivity() {
 
         component.inject(this)
         observeViewModel()
+        setupRatingSelect()
     }
 
     private fun observeViewModel() {
@@ -78,6 +81,29 @@ class FiltersActivity : AppCompatActivity() {
         binding.yearSlider.addOnChangeListener { slider, value, fromUser ->
             val values = slider.values
             viewModel.onYearRangeSelect(values[0].toInt(), values[1].toInt())
+        }
+    }
+
+    private fun setupRatingSelect() {
+        for (category in RatingCategory.entries) {
+            val radioButton = RadioButton(this)
+            radioButton.text = getRatingCategoryString(category)
+            radioButton.id = category.id
+            binding.ratingGroup.addView(radioButton)
+            if (category == RatingCategory.selectedByDefault) {
+                radioButton.isChecked = true
+            }
+        }
+        binding.ratingGroup.setOnCheckedChangeListener { group, checkedId ->
+            viewModel.onRatingCategorySelect(RatingCategory.getById(checkedId))
+        }
+    }
+
+    private fun getRatingCategoryString(ratingCategory: RatingCategory): String {
+        return when (ratingCategory) {
+            RatingCategory.BEST -> getString(R.string.best_rating, ratingCategory.numRepresentation)
+            RatingCategory.GOOD -> getString(R.string.good_rating, ratingCategory.numRepresentation)
+            RatingCategory.ALL -> getString(R.string.all)
         }
     }
 

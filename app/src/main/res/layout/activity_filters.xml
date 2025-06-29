@@ -67,7 +67,7 @@
         android:layout_height="wrap_content"
         android:gravity="center"
         android:orientation="vertical"
-        app:layout_constraintBottom_toTopOf="@id/applyButton"
+        app:layout_constraintBottom_toTopOf="@id/ratingLayout"
         app:layout_constraintTop_toBottomOf="@id/countryLayout">
 
         <TextView
@@ -87,6 +87,31 @@
             app:labelBehavior="gone" />
     </LinearLayout>
 
+    <LinearLayout
+        android:id="@+id/ratingLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toTopOf="@id/applyButton"
+        app:layout_constraintTop_toBottomOf="@id/yearLayout">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/rating"
+            android:textSize="@dimen/default_text_size" />
+
+        <RadioGroup
+            android:id="@+id/ratingGroup"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/filter_activity_fields"
+            android:layout_marginEnd="@dimen/filter_activity_fields"
+            android:gravity="center"
+            android:orientation="vertical" />
+    </LinearLayout>
+
     <Button
         android:id="@+id/applyButton"
         android:layout_width="wrap_content"
@@ -95,7 +120,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/yearLayout" />
+        app:layout_constraintTop_toBottomOf="@id/ratingLayout" />
 
     <ProgressBar
         android:id="@+id/loadingProgressBar"

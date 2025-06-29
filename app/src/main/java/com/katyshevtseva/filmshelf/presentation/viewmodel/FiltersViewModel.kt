@@ -1,11 +1,13 @@
 package com.katyshevtseva.filmshelf.presentation.viewmodel
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.katyshevtseva.filmshelf.domain.model.Country
 import com.katyshevtseva.filmshelf.domain.model.Genre
+import com.katyshevtseva.filmshelf.domain.model.RatingCategory
 import com.katyshevtseva.filmshelf.domain.model.YearRange
 import com.katyshevtseva.filmshelf.domain.result.Error
 import com.katyshevtseva.filmshelf.domain.result.Success
@@ -62,15 +64,19 @@ class FiltersViewModel @Inject constructor(
     }
 
     fun onGenreSelect(genre: Genre) {
-
+        Log.i("tag123456", "onGenreSelect ${genre.name}")
     }
 
     fun onCountrySelect(country: Country) {
-
+        Log.i("tag123456", "onCountrySelect ${country.name}")
     }
 
     fun onYearRangeSelect(start: Int, end: Int) {
         _selectedYearRangeStringLD.value = getYearRangeString(start, end)
+    }
+
+    fun onRatingCategorySelect(category: RatingCategory) {
+        Log.i("tag123456", "onRatingCategorySelect ${category.name}")
     }
 
     private suspend fun loadGenres() {

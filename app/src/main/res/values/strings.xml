@@ -13,4 +13,8 @@
     <string name="genre">Жанр</string>
     <string name="apply">Применить</string>
     <string name="country">Страна</string>
+    <string name="rating">Рейтинг</string>
+    <string name="best_rating">Лучшие(%1$s)</string>
+    <string name="good_rating">Хорошие(%1$s)</string>
+    <string name="all">All</string>
 </resources>
