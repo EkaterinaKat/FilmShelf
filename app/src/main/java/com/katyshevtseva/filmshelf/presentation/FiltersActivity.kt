@@ -10,9 +10,11 @@ import androidx.lifecycle.ViewModelProvider
 import com.katyshevtseva.filmshelf.FilmShelfApp
 import com.katyshevtseva.filmshelf.R
 import com.katyshevtseva.filmshelf.databinding.ActivityFiltersBinding
+import com.katyshevtseva.filmshelf.domain.model.Country
+import com.katyshevtseva.filmshelf.domain.model.Genre
 import com.katyshevtseva.filmshelf.domain.model.RatingCategory
 import com.katyshevtseva.filmshelf.domain.model.YearRange
-import com.katyshevtseva.filmshelf.presentation.util.setupSpinner
+import com.katyshevtseva.filmshelf.presentation.util.SpinnerAdapter
 import com.katyshevtseva.filmshelf.presentation.util.showAlertDialog
 import com.katyshevtseva.filmshelf.presentation.viewmodel.FiltersViewModel
 import com.katyshevtseva.filmshelf.presentation.viewmodel.ViewModelFactory
@@ -35,6 +37,9 @@ class FiltersActivity : AppCompatActivity() {
         ActivityFiltersBinding.inflate(layoutInflater)
     }
 
+    private lateinit var genreSpinnerAdapter: SpinnerAdapter<Genre>
+    private lateinit var countrySpinnerAdapter: SpinnerAdapter<Country>
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
@@ -46,10 +51,18 @@ class FiltersActivity : AppCompatActivity() {
 
     private fun observeViewModel() {
         viewModel.genresLD.observe(this) {
-            setupSpinner(this, it, binding.genreSpinner) { viewModel.onGenreSelect(it) }
+            genreSpinnerAdapter = SpinnerAdapter<Genre>(binding.genreSpinner, it)
+            genreSpinnerAdapter.setupSpinner(this)
+            genreSpinnerAdapter.setOnItemSelect {
+                viewModel.onGenreSelect(it)
+            }
         }
         viewModel.countriesLD.observe(this) {
-            setupSpinner(this, it, binding.countrySpinner) { viewModel.onCountrySelect(it) }
+            countrySpinnerAdapter = SpinnerAdapter<Country>(binding.countrySpinner, it)
+            countrySpinnerAdapter.setupSpinner(this)
+            countrySpinnerAdapter.setOnItemSelect {
+                viewModel.onCountrySelect(it)
+            }
         }
         viewModel.errorLD.observe(this) {
             showAlertDialog(this, resources.getString(R.string.error), it)
