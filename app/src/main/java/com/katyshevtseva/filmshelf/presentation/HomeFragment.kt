@@ -14,6 +14,7 @@ import com.katyshevtseva.filmshelf.databinding.FragmentHomeBinding
 import com.katyshevtseva.filmshelf.domain.model.SortType
 import com.katyshevtseva.filmshelf.presentation.adapter.MovieAdapter
 import com.katyshevtseva.filmshelf.presentation.util.SpinnerAdapter
+import com.katyshevtseva.filmshelf.presentation.util.SpinnerData
 import com.katyshevtseva.filmshelf.presentation.util.showAlertDialog
 import com.katyshevtseva.filmshelf.presentation.viewmodel.HomeViewModel
 import com.katyshevtseva.filmshelf.presentation.viewmodel.ViewModelFactory
@@ -105,7 +106,8 @@ class HomeFragment : Fragment() {
             SortTypeWrapper(SortType.OLD_FIRST, resources.getString(R.string.old))
         )
 
-        val spinnerAdapter = SpinnerAdapter<SortTypeWrapper>(binding.sortTypeSpinner, sortTypes)
+        val spinnerAdapter =
+            SpinnerAdapter<SortTypeWrapper>(binding.sortTypeSpinner, SpinnerData(sortTypes))
         spinnerAdapter.setupSpinner(requireActivity())
         spinnerAdapter.setOnItemSelect {
             viewModel.onSortTypeSelect(it.sortType)

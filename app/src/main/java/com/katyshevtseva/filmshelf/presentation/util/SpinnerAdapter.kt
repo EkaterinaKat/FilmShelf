@@ -9,13 +9,17 @@ import com.katyshevtseva.filmshelf.R
 
 class SpinnerAdapter<T>(
     private val spinner: Spinner,
-    private val items: List<T>
+    private val data: SpinnerData<T>
 ) {
 
     fun setupSpinner(context: Context) {
-        val adapter = ArrayAdapter(context, R.layout.spinner_item, items)
+        val adapter = ArrayAdapter(context, R.layout.spinner_item, data.items)
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         spinner.adapter = adapter
+
+        if (data.initItem != null) {
+            selectItem(data.initItem)
+        }
     }
 
     fun setOnItemSelect(onItemSelect: (T) -> Unit) {
@@ -27,7 +31,7 @@ class SpinnerAdapter<T>(
                     position: Int,
                     id: Long
                 ) {
-                    val selectedItem = items[position]
+                    val selectedItem = data.items[position]
                     onItemSelect(selectedItem)
                 }
 
@@ -36,7 +40,7 @@ class SpinnerAdapter<T>(
     }
 
     fun selectItem(t: T) {
-        val position: Int = items.indexOf(t)
+        val position: Int = data.items.indexOf(t)
         if (position >= 0) {
             spinner.setSelection(position)
         } else {

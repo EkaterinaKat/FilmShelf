@@ -15,6 +15,7 @@ import com.katyshevtseva.filmshelf.domain.model.Genre
 import com.katyshevtseva.filmshelf.domain.model.RatingCategory
 import com.katyshevtseva.filmshelf.domain.model.YearRange
 import com.katyshevtseva.filmshelf.presentation.util.SpinnerAdapter
+import com.katyshevtseva.filmshelf.presentation.util.SpinnerData
 import com.katyshevtseva.filmshelf.presentation.util.showAlertDialog
 import com.katyshevtseva.filmshelf.presentation.viewmodel.FiltersViewModel
 import com.katyshevtseva.filmshelf.presentation.viewmodel.ViewModelFactory
@@ -51,14 +52,14 @@ class FiltersActivity : AppCompatActivity() {
 
     private fun observeViewModel() {
         viewModel.genresLD.observe(this) {
-            genreSpinnerAdapter = SpinnerAdapter<Genre>(binding.genreSpinner, it)
+            genreSpinnerAdapter = SpinnerAdapter<Genre>(binding.genreSpinner, SpinnerData(it))
             genreSpinnerAdapter.setupSpinner(this)
             genreSpinnerAdapter.setOnItemSelect {
                 viewModel.onGenreSelect(it)
             }
         }
         viewModel.countriesLD.observe(this) {
-            countrySpinnerAdapter = SpinnerAdapter<Country>(binding.countrySpinner, it)
+            countrySpinnerAdapter = SpinnerAdapter<Country>(binding.countrySpinner, SpinnerData(it))
             countrySpinnerAdapter.setupSpinner(this)
             countrySpinnerAdapter.setOnItemSelect {
                 viewModel.onCountrySelect(it)
