@@ -11,8 +11,6 @@ enum class RatingCategory(
     ALL(3, 3, 10, "");
 
     companion object {
-        val selectedByDefault = ALL
-
         fun getById(id: Int): RatingCategory {
             for (category in RatingCategory.entries) {
                 if (category.id == id) (

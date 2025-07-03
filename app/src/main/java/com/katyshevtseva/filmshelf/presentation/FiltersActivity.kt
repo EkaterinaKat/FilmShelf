@@ -13,9 +13,8 @@ import com.katyshevtseva.filmshelf.databinding.ActivityFiltersBinding
 import com.katyshevtseva.filmshelf.domain.model.Country
 import com.katyshevtseva.filmshelf.domain.model.Genre
 import com.katyshevtseva.filmshelf.domain.model.RatingCategory
-import com.katyshevtseva.filmshelf.domain.model.YearRange
 import com.katyshevtseva.filmshelf.presentation.util.SpinnerAdapter
-import com.katyshevtseva.filmshelf.presentation.util.SpinnerData
+import com.katyshevtseva.filmshelf.presentation.util.YearSliderData
 import com.katyshevtseva.filmshelf.presentation.util.showAlertDialog
 import com.katyshevtseva.filmshelf.presentation.viewmodel.FiltersViewModel
 import com.katyshevtseva.filmshelf.presentation.viewmodel.ViewModelFactory
@@ -47,19 +46,18 @@ class FiltersActivity : AppCompatActivity() {
 
         component.inject(this)
         observeViewModel()
-        setupRatingSelect()
     }
 
     private fun observeViewModel() {
         viewModel.genresLD.observe(this) {
-            genreSpinnerAdapter = SpinnerAdapter<Genre>(binding.genreSpinner, SpinnerData(it))
+            genreSpinnerAdapter = SpinnerAdapter<Genre>(binding.genreSpinner, it)
             genreSpinnerAdapter.setupSpinner(this)
             genreSpinnerAdapter.setOnItemSelect {
                 viewModel.onGenreSelect(it)
             }
         }
         viewModel.countriesLD.observe(this) {
-            countrySpinnerAdapter = SpinnerAdapter<Country>(binding.countrySpinner, SpinnerData(it))
+            countrySpinnerAdapter = SpinnerAdapter<Country>(binding.countrySpinner, it)
             countrySpinnerAdapter.setupSpinner(this)
             countrySpinnerAdapter.setOnItemSelect {
                 viewModel.onCountrySelect(it)
@@ -80,31 +78,41 @@ class FiltersActivity : AppCompatActivity() {
         viewModel.selectedYearRangeStringLD.observe(this) {
             binding.yearTextView.text = it
         }
+        viewModel.initRatingLD.observe(this) {
+            setupRatingSelect(it)
+        }
     }
 
-    private fun setupYearSlider(yearRange: YearRange) {
-        val floatStart = yearRange.start.toFloat()
-        val floatEnd = yearRange.end.toFloat()
+    private fun setupYearSlider(data: YearSliderData) {
+        val floatStart = data.entireRange.start.toFloat()
+        val floatEnd = data.entireRange.end.toFloat()
 
         binding.yearSlider.valueFrom = floatStart
         binding.yearSlider.valueTo = floatEnd
         binding.yearSlider.values = listOf(floatStart, floatEnd)
 
-        viewModel.onYearRangeSelect(yearRange.start, yearRange.end)
+        viewModel.onYearRangeSelect(data.entireRange.start, data.entireRange.end)
 
         binding.yearSlider.addOnChangeListener { slider, value, fromUser ->
             val values = slider.values
             viewModel.onYearRangeSelect(values[0].toInt(), values[1].toInt())
         }
+
+        if (data.initialRange != null) {
+            binding.yearSlider.values = listOf(
+                data.initialRange.start.toFloat(),
+                data.initialRange.end.toFloat()
+            )
+        }
     }
 
-    private fun setupRatingSelect() {
+    private fun setupRatingSelect(initialValue: RatingCategory) {
         for (category in RatingCategory.entries) {
             val radioButton = RadioButton(this)
             radioButton.text = getRatingCategoryString(category)
             radioButton.id = category.id
             binding.ratingGroup.addView(radioButton)
-            if (category == RatingCategory.selectedByDefault) {
+            if (category == initialValue) {
                 radioButton.isChecked = true
             }
         }
