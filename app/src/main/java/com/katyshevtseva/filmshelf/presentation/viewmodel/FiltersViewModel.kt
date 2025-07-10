@@ -17,6 +17,7 @@ import com.katyshevtseva.filmshelf.domain.usecase.GetCountriesUseCase
 import com.katyshevtseva.filmshelf.domain.usecase.GetFiltersValuesUseCase
 import com.katyshevtseva.filmshelf.domain.usecase.GetGenresUseCase
 import com.katyshevtseva.filmshelf.domain.usecase.GetYearSelectRangeUseCase
+import com.katyshevtseva.filmshelf.domain.usecase.SetFiltersValuesUseCase
 import com.katyshevtseva.filmshelf.presentation.util.SpinnerData
 import com.katyshevtseva.filmshelf.presentation.util.YearSliderData
 import com.katyshevtseva.filmshelf.presentation.util.getYearRangeString
@@ -28,7 +29,8 @@ class FiltersViewModel @Inject constructor(
     private val getGenresUseCase: GetGenresUseCase,
     private val getCountriesUseCase: GetCountriesUseCase,
     private val getYearSelectRangeUseCase: GetYearSelectRangeUseCase,
-    getFiltersValuesUseCase: GetFiltersValuesUseCase
+    getFiltersValuesUseCase: GetFiltersValuesUseCase,
+    private val setFiltersValuesUseCase: SetFiltersValuesUseCase
 ) : AndroidViewModel(application) {
 
     private val _genresLD = MutableLiveData<SpinnerData<Genre>>()
@@ -62,6 +64,10 @@ class FiltersViewModel @Inject constructor(
     private val _applyButtonTextLD = MutableLiveData<String>()
     val applyButtonTextLD: LiveData<String>
         get() = _applyButtonTextLD
+
+    private val _shouldCloseActivity = MutableLiveData<Unit>()
+    val shouldCloseActivity: LiveData<Unit>
+        get() = _shouldCloseActivity
 
     private val initValues: FiltersValues =
         getFiltersValuesUseCase.invoke().value
@@ -113,6 +119,11 @@ class FiltersViewModel @Inject constructor(
     fun onRatingCategorySelect(category: RatingCategory) {
         currentValues.ratingCategory = category
         setApplyButtonText()
+    }
+
+    fun onApplyButtonClick() {
+        setFiltersValuesUseCase.invoke(currentValues)
+        _shouldCloseActivity.value = Unit
     }
 
     private fun setApplyButtonText() {

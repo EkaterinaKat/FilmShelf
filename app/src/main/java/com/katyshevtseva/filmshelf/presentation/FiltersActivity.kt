@@ -45,6 +45,7 @@ class FiltersActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         component.inject(this)
+        binding.applyButton.setOnClickListener { viewModel.onApplyButtonClick() }
         observeViewModel()
     }
 
@@ -83,6 +84,9 @@ class FiltersActivity : AppCompatActivity() {
         }
         viewModel.applyButtonTextLD.observe(this) {
             binding.applyButton.text = it
+        }
+        viewModel.shouldCloseActivity.observe(this) {
+            finish()
         }
     }
 
