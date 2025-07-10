@@ -72,7 +72,7 @@ class FiltersActivity : AppCompatActivity() {
             else
                 binding.loadingProgressBar.visibility = View.GONE
         }
-        viewModel.entireYearRangeLD.observe(this) {
+        viewModel.yearSliderDataLD.observe(this) {
             setupYearSlider(it)
         }
         viewModel.selectedYearRangeStringLD.observe(this) {
@@ -80,6 +80,9 @@ class FiltersActivity : AppCompatActivity() {
         }
         viewModel.initRatingLD.observe(this) {
             setupRatingSelect(it)
+        }
+        viewModel.applyButtonTextLD.observe(this) {
+            binding.applyButton.text = it
         }
     }
 

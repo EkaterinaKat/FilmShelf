@@ -1,10 +1,11 @@
 package com.katyshevtseva.filmshelf.presentation.viewmodel
 
-import android.util.Log
+import android.app.Application
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.katyshevtseva.filmshelf.R
 import com.katyshevtseva.filmshelf.domain.model.Country
 import com.katyshevtseva.filmshelf.domain.model.FiltersValues
 import com.katyshevtseva.filmshelf.domain.model.Genre
@@ -23,11 +24,12 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class FiltersViewModel @Inject constructor(
+    private val application: Application,
     private val getGenresUseCase: GetGenresUseCase,
     private val getCountriesUseCase: GetCountriesUseCase,
     private val getYearSelectRangeUseCase: GetYearSelectRangeUseCase,
     getFiltersValuesUseCase: GetFiltersValuesUseCase
-) : ViewModel() {
+) : AndroidViewModel(application) {
 
     private val _genresLD = MutableLiveData<SpinnerData<Genre>>()
     val genresLD: LiveData<SpinnerData<Genre>>
@@ -46,7 +48,7 @@ class FiltersViewModel @Inject constructor(
         get() = _loadingLD
 
     private val _yearSliderDataLD = MutableLiveData<YearSliderData>()
-    val entireYearRangeLD: LiveData<YearSliderData>
+    val yearSliderDataLD: LiveData<YearSliderData>
         get() = _yearSliderDataLD
 
     private val _selectedYearRangeStringLD = MutableLiveData<String>()
@@ -57,12 +59,21 @@ class FiltersViewModel @Inject constructor(
     val initRatingLD: LiveData<RatingCategory>
         get() = _initRatingLD
 
-    val initValuesLD: LiveData<FiltersValues> = getFiltersValuesUseCase.invoke()
+    private val _applyButtonTextLD = MutableLiveData<String>()
+    val applyButtonTextLD: LiveData<String>
+        get() = _applyButtonTextLD
+
+    private val initValues: FiltersValues =
+        getFiltersValuesUseCase.invoke().value
+            ?: throw RuntimeException("init filters values should not be null")
+
+    private val currentValues = initValues.copy()
 
     init {
         _loadingLD.value = true
 
-        _initRatingLD.value = initValuesLD.value?.ratingCategory
+        setApplyButtonText()
+        _initRatingLD.value = initValues.ratingCategory
 
         val genresJob = viewModelScope.launch { loadGenres() }
         val countriesJob = viewModelScope.launch { loadCountries() }
@@ -77,19 +88,43 @@ class FiltersViewModel @Inject constructor(
     }
 
     fun onGenreSelect(genre: Genre) {
-        Log.i("tag123456", "onGenreSelect ${genre.name}")
+        currentValues.genre = genre
+        setApplyButtonText()
     }
 
     fun onCountrySelect(country: Country) {
-        Log.i("tag123456", "onCountrySelect ${country.name}")
+        currentValues.country = country
+        setApplyButtonText()
     }
 
     fun onYearRangeSelect(start: Int, end: Int) {
         _selectedYearRangeStringLD.value = getYearRangeString(start, end)
+
+        val selectedRange = YearRange(start, end)
+        currentValues.yearRange = if (selectedRange == yearSliderDataLD.value?.entireRange) {
+            null
+        } else {
+            selectedRange
+        }
+
+        setApplyButtonText()
     }
 
     fun onRatingCategorySelect(category: RatingCategory) {
-        Log.i("tag123456", "onRatingCategorySelect ${category.name}")
+        currentValues.ratingCategory = category
+        setApplyButtonText()
+    }
+
+    private fun setApplyButtonText() {
+        _applyButtonTextLD.value = if (valuesHasBeenChanged()) {
+            application.getString(R.string.apply)
+        } else {
+            application.getString(R.string.back)
+        }
+    }
+
+    private fun valuesHasBeenChanged(): Boolean {
+        return initValues != currentValues
     }
 
     private suspend fun loadGenres() {
@@ -98,7 +133,7 @@ class FiltersViewModel @Inject constructor(
             is Success<List<Genre>> -> {
                 _genresLD.value = SpinnerData(
                     listOf(Genre.emptyGenre) + result.data,
-                    initValuesLD.value?.genre
+                    initValues.genre
                 )
             }
             is Error -> _errorLD.value = result.exception.message.toString()
@@ -111,7 +146,7 @@ class FiltersViewModel @Inject constructor(
             is Success<List<Country>> -> {
                 _countriesLD.value = SpinnerData(
                     listOf(Country.emptyCountry) + result.data,
-                    initValuesLD.value?.country
+                    initValues.country
                 )
             }
             is Error -> _errorLD.value = result.exception.message.toString()
@@ -121,9 +156,9 @@ class FiltersViewModel @Inject constructor(
     private suspend fun loadYearRange() {
         val result = getYearSelectRangeUseCase.invoke()
         when (result) {
-            is Success<YearRange> -> _yearSliderDataLD.value = YearSliderData(
-                result.data, initValuesLD.value?.yearRange
-            )
+            is Success<YearRange> -> {
+                _yearSliderDataLD.value = YearSliderData(result.data, initValues.yearRange)
+            }
             is Error -> _errorLD.value = result.exception.message.toString()
         }
     }
