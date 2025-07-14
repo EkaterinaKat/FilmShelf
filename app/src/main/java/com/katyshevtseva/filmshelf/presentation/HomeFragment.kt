@@ -96,6 +96,9 @@ class HomeFragment : Fragment() {
             else
                 binding.loadingProgressBar.visibility = View.GONE
         }
+        viewModel.filtersValuesLD.observe(viewLifecycleOwner) {
+            viewModel.onFiltersValuesUpdate()
+        }
     }
 
     private fun setupSortMenu() {

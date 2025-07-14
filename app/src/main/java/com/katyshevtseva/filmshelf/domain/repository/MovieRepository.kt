@@ -1,6 +1,7 @@
 package com.katyshevtseva.filmshelf.domain.repository
 
 import com.katyshevtseva.filmshelf.domain.model.Country
+import com.katyshevtseva.filmshelf.domain.model.FiltersValues
 import com.katyshevtseva.filmshelf.domain.model.Genre
 import com.katyshevtseva.filmshelf.domain.model.Movie
 import com.katyshevtseva.filmshelf.domain.model.MovieShortInfo
@@ -13,7 +14,8 @@ interface MovieRepository {
 
     suspend fun getFilteredMovies(
         page: Int,
-        sortType: SortType
+        sortType: SortType,
+        filtersValues: FiltersValues
     ): Result<List<MovieShortInfo>>
 
     suspend fun getMovieDetails(kpId: Int): Result<Movie>

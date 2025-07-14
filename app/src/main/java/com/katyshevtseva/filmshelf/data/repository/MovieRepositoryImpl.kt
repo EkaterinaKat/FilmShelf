@@ -3,15 +3,20 @@ package com.katyshevtseva.filmshelf.data.repository
 import com.katyshevtseva.filmshelf.data.local.LocalDataSource
 import com.katyshevtseva.filmshelf.data.mapper.MovieMapper
 import com.katyshevtseva.filmshelf.data.remote.RemoteDataSource
+import com.katyshevtseva.filmshelf.data.utils.getCountryForWepRequest
+import com.katyshevtseva.filmshelf.data.utils.getGenreForWepRequest
+import com.katyshevtseva.filmshelf.data.utils.getRatingStringForWebRequest
+import com.katyshevtseva.filmshelf.data.utils.getSortFieldString
+import com.katyshevtseva.filmshelf.data.utils.getSortOrderString
+import com.katyshevtseva.filmshelf.data.utils.getYearRangeStringForWebRequest
 import com.katyshevtseva.filmshelf.domain.model.Country
+import com.katyshevtseva.filmshelf.domain.model.FiltersValues
 import com.katyshevtseva.filmshelf.domain.model.Genre
 import com.katyshevtseva.filmshelf.domain.model.Movie
 import com.katyshevtseva.filmshelf.domain.model.MovieShortInfo
+import com.katyshevtseva.filmshelf.domain.model.RatingCategory
 import com.katyshevtseva.filmshelf.domain.model.SortType
-import com.katyshevtseva.filmshelf.domain.model.SortType.HIGH_RATING_FIRST
-import com.katyshevtseva.filmshelf.domain.model.SortType.NEW_FIRST
 import com.katyshevtseva.filmshelf.domain.model.SortType.OLD_FIRST
-import com.katyshevtseva.filmshelf.domain.model.SortType.POPULAR_FIRST
 import com.katyshevtseva.filmshelf.domain.model.Trailer
 import com.katyshevtseva.filmshelf.domain.model.YearRange
 import com.katyshevtseva.filmshelf.domain.repository.MovieRepository
@@ -29,7 +34,8 @@ class MovieRepositoryImpl @Inject constructor(
 
     override suspend fun getFilteredMovies(
         page: Int,
-        sortType: SortType
+        sortType: SortType,
+        filtersValues: FiltersValues
     ): Result<List<MovieShortInfo>> {
 
         return try {
@@ -37,9 +43,12 @@ class MovieRepositoryImpl @Inject constructor(
                 page,
                 getSortFieldString(sortType),
                 getSortOrderString(sortType),
-                RATING,
+                getRatingStringForWebRequest(filtersValues.ratingCategory),
                 PAGE_SIZE,
-                MOVIE_TYPE
+                MOVIE_TYPE,
+                getYearRangeStringForWebRequest(filtersValues.yearRange),
+                getGenreForWepRequest(filtersValues.genre),
+                getCountryForWepRequest(filtersValues.country)
             )
             Success(response.movies.map {
                 mapper.mapDtoToDomainModel(it)
@@ -127,7 +136,7 @@ class MovieRepositoryImpl @Inject constructor(
                 1,
                 getSortFieldString(OLD_FIRST),
                 getSortOrderString(OLD_FIRST),
-                RATING,
+                getRatingStringForWebRequest(RatingCategory.ALL),
                 1,
                 MOVIE_TYPE
             )
@@ -144,27 +153,10 @@ class MovieRepositoryImpl @Inject constructor(
         }
     }
 
-
-    private fun getSortFieldString(sortType: SortType): String {
-        return when (sortType) {
-            POPULAR_FIRST -> "votes.kp"
-            HIGH_RATING_FIRST -> "rating.kp"
-            NEW_FIRST, OLD_FIRST -> "year"
-        }
-    }
-
-    private fun getSortOrderString(sortType: SortType): String {
-        return when (sortType) {
-            POPULAR_FIRST, HIGH_RATING_FIRST, NEW_FIRST -> "-1"
-            OLD_FIRST -> "1"
-        }
-    }
-
     companion object {
         const val MOVIE_TYPE = "movie"
         const val GENRE_FIELD = "genres.name"
         const val COUNTRY_FIELD = "countries.name"
         const val PAGE_SIZE = 20
-        const val RATING = "3-10"
     }
 }

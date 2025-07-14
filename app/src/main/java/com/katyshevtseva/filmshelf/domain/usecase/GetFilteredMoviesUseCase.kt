@@ -1,5 +1,6 @@
 package com.katyshevtseva.filmshelf.domain.usecase
 
+import com.katyshevtseva.filmshelf.domain.model.FiltersValues
 import com.katyshevtseva.filmshelf.domain.model.MovieShortInfo
 import com.katyshevtseva.filmshelf.domain.model.SortType
 import com.katyshevtseva.filmshelf.domain.repository.MovieRepository
@@ -12,8 +13,9 @@ class GetFilteredMoviesUseCase @Inject constructor(
 
     suspend operator fun invoke(
         page: Int,
-        sortType: SortType
+        sortType: SortType,
+        filtersValues: FiltersValues
     ): Result<List<MovieShortInfo>> {
-        return movieRepository.getFilteredMovies(page, sortType)
+        return movieRepository.getFilteredMovies(page, sortType, filtersValues)
     }
 }

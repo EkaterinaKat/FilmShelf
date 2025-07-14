@@ -4,16 +4,19 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.katyshevtseva.filmshelf.domain.model.FiltersValues
 import com.katyshevtseva.filmshelf.domain.model.MovieShortInfo
 import com.katyshevtseva.filmshelf.domain.model.SortType
 import com.katyshevtseva.filmshelf.domain.result.Error
 import com.katyshevtseva.filmshelf.domain.result.Success
 import com.katyshevtseva.filmshelf.domain.usecase.GetFilteredMoviesUseCase
+import com.katyshevtseva.filmshelf.domain.usecase.GetFiltersValuesUseCase
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class HomeViewModel @Inject constructor(
-    private val getFilteredMoviesUseCase: GetFilteredMoviesUseCase
+    private val getFilteredMoviesUseCase: GetFilteredMoviesUseCase,
+    private val getFiltersValuesUseCase: GetFiltersValuesUseCase
 ) : ViewModel() {
 
     private val _moviesLD = MutableLiveData<List<MovieShortInfo>>()
@@ -28,6 +31,12 @@ class HomeViewModel @Inject constructor(
     val loadingLD: LiveData<Boolean>
         get() = _loadingLD
 
+    val filtersValuesLD: LiveData<FiltersValues> = getFiltersValuesUseCase.invoke()
+
+    private val filtersValues: FiltersValues
+        get() = getFiltersValuesUseCase.invoke().value
+            ?: throw RuntimeException("filters values should not be null")
+
     private var page = 0
 
     private var sortType = SortType.POPULAR_FIRST
@@ -37,7 +46,7 @@ class HomeViewModel @Inject constructor(
             page++
             viewModelScope.launch {
                 _loadingLD.value = true
-                val result = getFilteredMoviesUseCase.invoke(page, sortType)
+                val result = getFilteredMoviesUseCase.invoke(page, sortType, filtersValues)
                 when (result) {
                     is Success<List<MovieShortInfo>> -> {
                         addNextPageToExistingOnes(result.data)
@@ -48,6 +57,11 @@ class HomeViewModel @Inject constructor(
                 _loadingLD.value = false
             }
         }
+    }
+
+    fun onFiltersValuesUpdate() {
+        resetPagination()
+        loadNextPage()
     }
 
     fun onSortTypeSelect(newSortType: SortType) {

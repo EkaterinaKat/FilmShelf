@@ -13,7 +13,9 @@ class FiltersValuesRepositoryImpl @Inject constructor() : FiltersValuesRepositor
     )
 
     override fun setFiltersValues(values: FiltersValues) {
-        filtersValues.value = values
+        if (filtersValues.value != values) {
+            filtersValues.value = values
+        }
     }
 
     override fun getFiltersValues(): LiveData<FiltersValues> {

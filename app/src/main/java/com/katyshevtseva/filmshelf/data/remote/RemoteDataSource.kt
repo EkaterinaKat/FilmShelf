@@ -18,6 +18,33 @@ class RemoteDataSource @Inject constructor(
         sortOrder: String,
         rating: String,
         limit: Int,
+        type: String,
+        year: String?,
+        genre: String?,
+        country: String?
+    ): MovieListDto {
+        return load {
+            apiService.loadMovies(
+                page,
+                "2BW30XT-0E84FXT-PC1P59Z-1BW2MWB",
+                sortField,
+                sortOrder,
+                rating,
+                limit,
+                type,
+                year,
+                genre,
+                country
+            )
+        }
+    }
+
+    suspend fun getFilteredMovies(
+        page: Int,
+        sortField: String,
+        sortOrder: String,
+        rating: String,
+        limit: Int,
         type: String
     ): MovieListDto {
         return load {
@@ -28,7 +55,10 @@ class RemoteDataSource @Inject constructor(
                 sortOrder,
                 rating,
                 limit,
-                type
+                type,
+                null,
+                null,
+                null
             )
         }
     }

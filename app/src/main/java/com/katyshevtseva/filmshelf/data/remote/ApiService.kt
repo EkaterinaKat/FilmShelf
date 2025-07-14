@@ -19,7 +19,10 @@ interface ApiService {
         @Query("sortType") sortType: String,
         @Query("rating.kp") ratingKp: String,
         @Query("limit") limit: Int,
-        @Query("type") type: String
+        @Query("type") type: String,
+        @Query("year") year: String?,
+        @Query("genres.name") genre: String?,
+        @Query("countries.name") country: String?,
     ): Response<MovieListDto>
 
     @GET("v1.4/movie/{movieId}")
