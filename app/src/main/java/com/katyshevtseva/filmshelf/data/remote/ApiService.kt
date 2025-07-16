@@ -14,7 +14,6 @@ interface ApiService {
     @GET("v1.4/movie")
     suspend fun loadMovies(
         @Query("page") page: Int,
-        @Query("token") token: String,
         @Query("sortField") sortField: String,
         @Query("sortType") sortType: String,
         @Query("rating.kp") ratingKp: String,
@@ -27,26 +26,22 @@ interface ApiService {
 
     @GET("v1.4/movie/{movieId}")
     suspend fun loadMovieById(
-        @Path("movieId") movieId: Int,
-        @Query("token") token: String
+        @Path("movieId") movieId: Int
     ): Response<MovieDto>
 
     @GET("v1.4/movie/{movieId}")
     suspend fun loadTrailers(
-        @Path("movieId") movieId: Int,
-        @Query("token") token: String
+        @Path("movieId") movieId: Int
     ): Response<TrailerListDto>
 
     @GET("v1.4/movie/search")
     suspend fun searchByTitle(
         @Query("page") page: Int,
-        @Query("query") query: String,
-        @Query("token") token: String
+        @Query("query") query: String
     ): Response<MovieListDto>
 
     @GET("v1/movie/possible-values-by-field")
     suspend fun loadPossibleValue(
-        @Query("field") field: String,
-        @Query("token") token: String
+        @Query("field") field: String
     ): Response<List<PossibleValueDto>>
 }

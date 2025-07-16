@@ -26,7 +26,6 @@ class RemoteDataSource @Inject constructor(
         return load {
             apiService.loadMovies(
                 page,
-                "2BW30XT-0E84FXT-PC1P59Z-1BW2MWB",
                 sortField,
                 sortOrder,
                 rating,
@@ -50,7 +49,6 @@ class RemoteDataSource @Inject constructor(
         return load {
             apiService.loadMovies(
                 page,
-                "2BW30XT-0E84FXT-PC1P59Z-1BW2MWB",
                 sortField,
                 sortOrder,
                 rating,
@@ -65,25 +63,25 @@ class RemoteDataSource @Inject constructor(
 
     suspend fun getMovieDetails(kpId: Int): MovieDto {
         return load {
-            apiService.loadMovieById(kpId, "2BW30XT-0E84FXT-PC1P59Z-1BW2MWB")
+            apiService.loadMovieById(kpId)
         }
     }
 
     suspend fun getTrailers(movieKpId: Int): TrailerListDto {
         return load {
-            apiService.loadTrailers(movieKpId, "2BW30XT-0E84FXT-PC1P59Z-1BW2MWB")
+            apiService.loadTrailers(movieKpId)
         }
     }
 
     suspend fun searchMovieByTitle(searchString: String): MovieListDto {
         return load {
-            apiService.searchByTitle(1, searchString, "2BW30XT-0E84FXT-PC1P59Z-1BW2MWB")
+            apiService.searchByTitle(1, searchString)
         }
     }
 
     suspend fun getPossibleValue(field: String): List<PossibleValueDto> {
         return load {
-            apiService.loadPossibleValue(field, "2BW30XT-0E84FXT-PC1P59Z-1BW2MWB")
+            apiService.loadPossibleValue(field)
         }
     }
 

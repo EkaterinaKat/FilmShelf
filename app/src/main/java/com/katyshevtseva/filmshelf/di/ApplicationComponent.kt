@@ -32,7 +32,8 @@ interface ApplicationComponent {
     interface Factory {
 
         fun create(
-            @BindsInstance application: Application
+            @BindsInstance application: Application,
+            @BindsInstance token: String
         ): ApplicationComponent
     }
 }

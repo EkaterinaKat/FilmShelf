@@ -6,6 +6,6 @@ import com.katyshevtseva.filmshelf.di.DaggerApplicationComponent
 class FilmShelfApp : Application() {
 
     val component by lazy {
-        DaggerApplicationComponent.factory().create(this)
+        DaggerApplicationComponent.factory().create(this, BuildConfig.TOKEN)
     }
 }

@@ -28,8 +28,8 @@ interface DataModule {
 
         @Provides
         @ApplicationScope
-        fun provideApiService(): ApiService {
-            return ApiFactory.apiService
+        fun provideApiService(apiFactory: ApiFactory): ApiService {
+            return apiFactory.apiService
         }
 
         @Provides

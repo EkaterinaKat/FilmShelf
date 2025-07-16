@@ -1,8 +1,17 @@
+import java.util.Properties
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.ksp)
 }
+
+val tokenProperties = Properties()
+val localPropertiesFile = rootProject.file("token.properties")
+if (localPropertiesFile.exists()) {
+    tokenProperties.load(localPropertiesFile.inputStream())
+}
+
 
 android {
     namespace = "com.katyshevtseva.filmshelf"
@@ -16,6 +25,10 @@ android {
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+
+        val token = tokenProperties.getProperty("token", null)
+        buildConfigField("String", "TOKEN", "\"$token\"")
+
     }
 
     buildTypes {
@@ -36,6 +49,7 @@ android {
     }
     buildFeatures {
         viewBinding = true
+        buildConfig = true
     }
 }
 
@@ -59,4 +73,5 @@ dependencies {
     implementation(libs.room.runtime)
     implementation(libs.room.ktx)
     ksp(libs.room.compiler)
+    implementation(libs.security.crypto)
 }
