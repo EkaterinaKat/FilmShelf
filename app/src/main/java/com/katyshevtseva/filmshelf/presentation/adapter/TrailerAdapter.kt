@@ -3,9 +3,8 @@ package com.katyshevtseva.filmshelf.presentation.adapter
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.katyshevtseva.filmshelf.R
+import com.katyshevtseva.filmshelf.databinding.TrailerItemBinding
 import com.katyshevtseva.filmshelf.domain.model.Trailer
 
 class TrailerAdapter : RecyclerView.Adapter<TrailerViewHolder>() {
@@ -18,13 +17,18 @@ class TrailerAdapter : RecyclerView.Adapter<TrailerViewHolder>() {
     var onTrailerClickListener: ((Trailer) -> Unit)? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TrailerViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.trailer_item, parent, false)
-        return TrailerViewHolder(view)
+        return TrailerViewHolder(
+            TrailerItemBinding.inflate(
+                LayoutInflater.from(parent.context),
+                parent,
+                false
+            )
+        )
     }
 
     override fun onBindViewHolder(holder: TrailerViewHolder, position: Int) {
         val trailer = trailers[position]
-        holder.trailerNameTextView.text = trailer.name
+        holder.binding.trailerNameTextView.text = trailer.name
 
         holder.itemView.setOnClickListener(View.OnClickListener { view: View? ->
             onTrailerClickListener?.invoke(trailer)
@@ -36,6 +40,4 @@ class TrailerAdapter : RecyclerView.Adapter<TrailerViewHolder>() {
     }
 }
 
-class TrailerViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-    val trailerNameTextView: TextView = itemView.findViewById<TextView?>(R.id.trailerNameTextView)
-}
+class TrailerViewHolder(val binding: TrailerItemBinding) : RecyclerView.ViewHolder(binding.root)

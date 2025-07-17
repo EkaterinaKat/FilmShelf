@@ -5,13 +5,12 @@ import android.graphics.drawable.Drawable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.katyshevtseva.filmshelf.R
+import com.katyshevtseva.filmshelf.databinding.MovieItemBinding
 import com.katyshevtseva.filmshelf.domain.model.MovieShortInfo
 import com.katyshevtseva.filmshelf.presentation.util.NULL_RATING_FOR_DISPLAY
 import java.util.Locale
@@ -24,8 +23,13 @@ class MovieAdapter : ListAdapter<MovieShortInfo, MovieViewHolder>(MovieItemDiffC
         parent: ViewGroup,
         viewType: Int
     ): MovieViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.movie_item, parent, false)
-        return MovieViewHolder(view)
+        return MovieViewHolder(
+            MovieItemBinding.inflate(
+                LayoutInflater.from(parent.context),
+                parent,
+                false
+            )
+        )
     }
 
     override fun onBindViewHolder(
@@ -35,14 +39,15 @@ class MovieAdapter : ListAdapter<MovieShortInfo, MovieViewHolder>(MovieItemDiffC
         val movie = getItem(position)
 
         if (movie.posterUrl != null) {
-            Glide.with(holder.itemView).load(movie.posterUrl).into(holder.posterImageView)
+            Glide.with(holder.itemView).load(movie.posterUrl).into(holder.binding.posterImageView)
         } else {
-            holder.posterImageView.setImageResource(R.mipmap.default_poster)
+            holder.binding.posterImageView.setImageResource(R.mipmap.default_poster)
         }
 
-        holder.ratingTextView.text =
+        holder.binding.ratingTextView.text =
             String.format(Locale.getDefault(), "%.1f", movie.ratingKp)
-        holder.ratingTextView.background = getRatingBackground(movie, holder.itemView.context)
+        holder.binding.ratingTextView.background =
+            getRatingBackground(movie, holder.itemView.context)
 
         holder.itemView.setOnClickListener { view: View? ->
             onMovieClickListener?.invoke(movie)
@@ -68,8 +73,4 @@ class MovieAdapter : ListAdapter<MovieShortInfo, MovieViewHolder>(MovieItemDiffC
     }
 }
 
-class MovieViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-    val posterImageView: ImageView =
-        itemView.findViewById<ImageView>(R.id.posterImageView)
-    val ratingTextView: TextView = itemView.findViewById<TextView?>(R.id.ratingTextView)
-}
+class MovieViewHolder(val binding: MovieItemBinding) : RecyclerView.ViewHolder(binding.root)
