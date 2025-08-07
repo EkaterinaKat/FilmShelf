@@ -2,11 +2,11 @@
 
 Проект для просмотра информации о фильмах.
 
-Стек технологий: Retrofit, Dagger, Glide, Room
-Язык: Kotlin
-CompileSdk: 35
-MinSdk: 24
-TargetSdk: 35
+Стек технологий: Retrofit, Dagger, Glide, Room  
+Язык: Kotlin  
+CompileSdk: 35  
+MinSdk: 24  
+TargetSdk: 35  
 
 Для работы с многопоточностью используются корутины.
 
@@ -43,9 +43,5 @@ TargetSdk: 35
 
 На странице с детальной информацией есть ссылки на трейлеры фильма, при клике по которым происходит переход в приложение для просмотра видео.
 
-![Главная](screenshots/home.png)
-![Сортировка](screenshots/sort.png)
-![Фильтры](screenshots/filters.png)
-![Поиск](screenshots/search.png)
-![Детальная информация](screenshots/details.png)
-![Список трейлеров](screenshots/trailers.png)
+<img src="screenshots/home.png" alt="Главная" width="30%" /> <img src="screenshots/sort.png" alt="Сортировка" width="30%" /> <img src="screenshots/filters.png" alt="Фильтры" width="30%" />
+<img src="screenshots/search.png" alt="Поиск" width="30%" /> <img src="screenshots/details.png" alt="Детальная информация" width="30%" /> <img src="screenshots/trailers.png" alt="Список трейлеров" width="30%" />
