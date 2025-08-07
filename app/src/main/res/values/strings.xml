@@ -16,6 +16,6 @@
     <string name="rating">Рейтинг</string>
     <string name="best_rating">Лучшие(%1$s)</string>
     <string name="good_rating">Хорошие(%1$s)</string>
-    <string name="all">All</string>
+    <string name="all">Все</string>
     <string name="back">Назад</string>
 </resources>
