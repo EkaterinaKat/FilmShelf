@@ -7,7 +7,6 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.katyshevtseva.filmshelf.R
 import com.katyshevtseva.filmshelf.domain.model.Country
-import com.katyshevtseva.filmshelf.domain.model.FiltersValues
 import com.katyshevtseva.filmshelf.domain.model.Genre
 import com.katyshevtseva.filmshelf.domain.model.RatingCategory
 import com.katyshevtseva.filmshelf.domain.model.YearRange
@@ -69,9 +68,7 @@ class FiltersViewModel @Inject constructor(
     val shouldCloseActivity: LiveData<Unit>
         get() = _shouldCloseActivity
 
-    private val initValues: FiltersValues =
-        getFiltersValuesUseCase.invoke().value
-            ?: throw RuntimeException("init filters values should not be null")
+    private val initValues = getFiltersValuesUseCase.invoke()
 
     private val currentValues = initValues.copy()
 

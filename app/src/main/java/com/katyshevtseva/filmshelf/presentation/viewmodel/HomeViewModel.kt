@@ -31,11 +31,7 @@ class HomeViewModel @Inject constructor(
     val loadingLD: LiveData<Boolean>
         get() = _loadingLD
 
-    val filtersValuesLD: LiveData<FiltersValues> = getFiltersValuesUseCase.invoke()
-
-    private val filtersValues: FiltersValues
-        get() = getFiltersValuesUseCase.invoke().value
-            ?: throw RuntimeException("filters values should not be null")
+    private var filtersValues: FiltersValues? = null
 
     private var page = 0
 
@@ -46,7 +42,7 @@ class HomeViewModel @Inject constructor(
             page++
             viewModelScope.launch {
                 _loadingLD.value = true
-                val result = getFilteredMoviesUseCase.invoke(page, sortType, filtersValues)
+                val result = getFilteredMoviesUseCase.invoke(page, sortType, filtersValues!!)
                 when (result) {
                     is Success<List<MovieShortInfo>> -> {
                         addNextPageToExistingOnes(result.data)
@@ -59,9 +55,13 @@ class HomeViewModel @Inject constructor(
         }
     }
 
-    fun onFiltersValuesUpdate() {
-        resetPagination()
-        loadNextPage()
+    fun updateContentIfNeeded() {
+        val newValues = getFiltersValuesUseCase.invoke()
+        if (newValues != filtersValues) {
+            filtersValues = newValues
+            resetPagination()
+            loadNextPage()
+        }
     }
 
     fun onSortTypeSelect(newSortType: SortType) {

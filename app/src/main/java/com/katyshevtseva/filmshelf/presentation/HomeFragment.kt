@@ -64,6 +64,11 @@ class HomeFragment : Fragment() {
         }
     }
 
+    override fun onStart() {
+        super.onStart()
+        viewModel.updateContentIfNeeded()
+    }
+
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
@@ -95,9 +100,6 @@ class HomeFragment : Fragment() {
                 binding.loadingProgressBar.visibility = View.VISIBLE
             else
                 binding.loadingProgressBar.visibility = View.GONE
-        }
-        viewModel.filtersValuesLD.observe(viewLifecycleOwner) {
-            viewModel.onFiltersValuesUpdate()
         }
     }
 
