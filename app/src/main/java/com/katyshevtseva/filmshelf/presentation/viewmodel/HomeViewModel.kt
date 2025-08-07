@@ -65,9 +65,11 @@ class HomeViewModel @Inject constructor(
     }
 
     fun onSortTypeSelect(newSortType: SortType) {
-        sortType = newSortType
-        resetPagination()
-        loadNextPage()
+        if (sortType != newSortType) {
+            sortType = newSortType
+            resetPagination()
+            loadNextPage()
+        }
     }
 
     private fun resetPagination() {
